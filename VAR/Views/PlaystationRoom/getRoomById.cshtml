@@ -1,0 +1,81 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_VarLayout";
+}
+@model Playstation
+
+@section Styles{
+ <link rel="stylesheet" href="~/css/roomReserve.css" />
+}
+
+<h1>View</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<h1 id="room-status"></h1>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.RoomName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Version)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+        </tr>
+    </thead>
+    <tbody>     
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.RoomName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model.Version)
+                </td>
+                <td>
+                @Html.DisplayFor(modelItem => Model.Price)
+                </td>
+            </tr>
+    </tbody>
+</table>
+
+
+<button id="startBtn">START</button>
+<h1 id="startTime"></h1>
+
+<button id="stopBtn">STOP</button>
+<h1 id="stopTime"></h1>
+
+<h1 id="diffrence"></h1>
+
+<div class="timer">
+    <span id="hour">00</span>:
+    <span id="minute">00</span>:
+    <span id="second">00</span>
+</div>
+
+<div class="item">
+    <div><button id="add-item">Add Item</button></div>
+    <div id="display-items"></div>
+</div>
+
+<div id="cart-items"></div>
+   
+
+
+
+@section Scripts{
+     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script  src="/js/ReservePlaystationRoom.js"></script>
+    <script src="/js/Item.js"></script>
+
+}

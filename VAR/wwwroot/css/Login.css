@@ -1,0 +1,33 @@
+﻿form div p {
+    font-size: small;
+}
+.login-label {
+    color: #002152 !important;
+    font-size: 17px !important;
+    margin: auto;
+    margin-left: 241px;
+    margin-bottom: 11px;
+}
+.login-input {
+    width: 62%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-login {
+    background-color: #07BFA5;
+
+}
+
+.login-form-container {
+    border: 1px solid #07BFA5;
+    border-radius: 10px;
+    box-shadow: 0px 8px 20px rgba(7, 191, 165, 0.3);
+    margin-top: 11% !important;
+    padding: 30px;
+
+}
+
+#forgot:hover {
+    cursor: pointer;
+}

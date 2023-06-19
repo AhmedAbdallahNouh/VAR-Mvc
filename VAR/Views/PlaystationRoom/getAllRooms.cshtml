@@ -1,0 +1,44 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+        Layout = "_VarLayout";
+
+}
+
+@model List<Playstation>
+
+<section class="page-section bg-light" id="portfolio">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="section-heading text-uppercase">Portfolio</h2>
+            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+        </div>
+        <div class="row">
+            @foreach(var item in Model)
+            {
+                 <div class="col-lg-4 col-sm-6 mb-4">
+                <!-- Portfolio item -->
+                <div class="portfolio-item">
+                        <a class="portfolio-link" data-bs-toggle="modal" asp-action="getRoomById" asp-controller="PlaystationRoom" asp-route-id=@item.Id>
+                        <div class="portfolio-hover">
+                            <div class="portfolio-hover-content"><i class="fas fa-plus fa-3x"></i></div>
+                        </div>
+                        <img class="img-fluid" src="~/assets/img/portfolio/1.jpg" alt="..." />
+                    </a>
+                    <div class="portfolio-caption">
+                        <div class="portfolio-caption-heading">Threads</div>
+                        <div class="portfolio-caption-subheading text-muted">Illustration</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Portfolio item end-->
+
+            }
+         
+
+        </div>
+    </div>
+</section>
+
+

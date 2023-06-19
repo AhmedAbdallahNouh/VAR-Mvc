@@ -1,0 +1,50 @@
+﻿@using VAR.ViewModels;
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    
+}
+@model LoginVM
+
+@section Styles{
+ <link rel="stylesheet" href="~/css/Login.css" />
+}
+
+<div class="container login-form-container">
+    <form id="login-form" asp-controller="Account" asp-action="Login" method="post">
+
+        <div class="form-group">
+            <label asp-for="Email"  class="login-label"></label>
+            <input oninput="checkValid()" asp-for="Email" class=" form-control login-input mb-2">
+            <div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Password" class="login-label">Password</label>
+            <input oninput="checkValid()" asp-for="Password" class=" form-control login-input mb-2">
+            <div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+
+        <button type="submit"  id="login" class="btn btn-info btn-login text-white w-25  mt-3" >Login</button>    
+        
+        <div id="spinner" class="d-flex justify-content-center ">
+        </div>
+
+    </form>
+</div>
+
+
+@section Scripts{
+     @*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="/js/Account.js"></script>
+}
+
+                
