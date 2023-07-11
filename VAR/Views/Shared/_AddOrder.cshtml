@@ -1,0 +1,14 @@
+﻿
+@model Order
+
+<form asp-action="AddOrderDB" asp-controller="Order" method="post">
+    <input hidden asp-for="StartTime"  />
+
+    <input hidden asp-for="EndTime" />
+
+    <input hidden asp-for="adminID" />
+
+    <input hidden asp-for="playstationID" />
+
+    <button hidden id="submit-order" type="submit">Add</button>
+</form>

@@ -31,7 +31,6 @@ namespace VAR.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -58,6 +57,10 @@ namespace VAR.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("InStock")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -125,7 +128,7 @@ namespace VAR.Migrations
 
                     b.HasIndex("itemId");
 
-                    b.ToTable("OrderItemDetails");
+                    b.ToTable("orderItemDetails");
                 });
 
             modelBuilder.Entity("VAR.Models.Playstation", b =>
@@ -136,7 +139,7 @@ namespace VAR.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Price")
+                    b.Property<int>("MultiPrice")
                         .HasMaxLength(50)
                         .HasColumnType("int");
 
@@ -144,6 +147,10 @@ namespace VAR.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("SinglePrice")
+                        .HasMaxLength(50)
+                        .HasColumnType("int");
 
                     b.Property<string>("Version")
                         .IsRequired()

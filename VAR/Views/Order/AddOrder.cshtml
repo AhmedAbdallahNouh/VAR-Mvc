@@ -1,0 +1,20 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_VarLayout";
+
+}
+@model Order
+
+<form asp-action="AddOrderToDB" asp-controller="Order" method="post">
+    <input asp-for="StartTime"   />
+
+    <input asp-for="EndTime"  />
+
+    <input asp-for="adminID"  />
+
+    <input asp-for="playstationID"  />
+
+    <button id="submit-order"  type="submit">Add</button >
+</form>

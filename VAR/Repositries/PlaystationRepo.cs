@@ -11,10 +11,7 @@ namespace VAR.Repositries
             this.dbContext = dbContext;
         }
 
-        public async Task<List<Playstation>> getAll()
-        {
-            return await dbContext.Playstations.Include(p => p.Orders).ToListAsync();
-        }
+        public async Task<List<Playstation>?> getAll() => await dbContext.Playstations.Include(p => p.Orders).ToListAsync();
         public async Task<Playstation?> getById(int id)
         {
             return await dbContext.Playstations.Include(p => p.Orders).SingleOrDefaultAsync(p => p.Id == id);

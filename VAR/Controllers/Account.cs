@@ -51,26 +51,7 @@ namespace VAR.Controllers
                     bool valid = await _authnticationRepo.checkPassword(user, loginVM.Password);
                     if (valid)
                     {
-                        //Dictionary<string, string> cookies = new Dictionary<string, string>
-                        //{
-                        //    { "Id", user.Id.ToString() },
-                        //    { "Name",user.Name.ToString()}
-                        //};
-
-                        //foreach (var cookie in cookies)
-                        //{
-                        //    Response.Cookies.Append(cookie.Key, cookie.Value, new CookieOptions
-                        //    {
-                        //        Expires = DateTime.Now.AddMinutes(30),
-                        //        HttpOnly = true,
-                        //        Secure = true,
-                        //        SameSite = SameSiteMode.Strict
-                        //    });
-
-
-                        //    return RedirectToAction("Index", "Home");
-                        //}
-
+                       
                         List<Claim> claims = new List<Claim>() {
                             new Claim(ClaimTypes.Email, loginVM.Email),
                             new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
@@ -90,7 +71,7 @@ namespace VAR.Controllers
 
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                         new ClaimsPrincipal(claimsIdentity), properties);
-
+                        HttpContext.Response.Cookies.Append("AdminId", claims[1].Value);
                         return RedirectToAction("Index", "Home");
 
                     }

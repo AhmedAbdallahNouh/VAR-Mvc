@@ -16,10 +16,10 @@ namespace VAR.Models
 
         [ForeignKey("Admin")]
         public int adminID { get; set; }
-        public virtual Admin? Admin { get; set; } = new Admin();
+        public virtual Admin? Admin { get; set; }
 
         [ForeignKey("Playstation")]
         public int playstationID { get; set; }
-        public  Playstation? Playstation { get; set; } = new Playstation();
+        public Playstation? Playstation { get; set; }
     }
 }

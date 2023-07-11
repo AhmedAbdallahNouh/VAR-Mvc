@@ -20,8 +20,14 @@ namespace VAR.Models
 
         [Required]
         [MaxLength(50)]
-        [DisplayName("Price")]
-        public int Price { get; set; }
+        [DisplayName("Single Price")]
+        public int SinglePrice { get; set; }
+
+
+        [Required]
+        [MaxLength(50)]
+        [DisplayName("Multi Price")]
+        public int MultiPrice { get; set; }
 
         //Relations
         public virtual List<Order> Orders { get; set; } = new List<Order>();

@@ -1,13 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-
-}
+﻿
 @model List<Item>
-
-
-
 
 <label for="select-item">Items</label>
     <select id="select-item" onchange="setItemNumInStock()" asp-items="ViewBag.Items" class="form-control">
@@ -18,9 +10,10 @@
     <div class="col-md-2 mt-3 amount text-center">
     <input id="number" class=" form-control w-100" type="number"  />
        </div>
+
 <div id="add-div">
     <button id="add">Add</button>
-       </div>
+</div>
 
 <script>
     var itemList = @Html.Raw(Json.Serialize(Model));

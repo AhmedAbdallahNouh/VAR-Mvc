@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Item\" />
-    <Folder Include="Views\Order\" />
   </ItemGroup>
 
 </Project>

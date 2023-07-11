@@ -19,6 +19,10 @@ namespace VAR
             builder.Services.AddScoped<IPlaystationRepo, PlaystationRepo>(); //Ingect IPlaystationRepo
             builder.Services.AddScoped<IAuthnticationRepo, AuthnticationRepo>(); //Ingect IAuthnticationRepo
             builder.Services.AddScoped<IItemRepo, ItemRepo>(); //Ingect ItemRepo
+            builder.Services.AddScoped<IOrderRepo, OrderRepo>(); //Ingect IOrderRepo
+            builder.Services.AddScoped<IOrderItemDetailsRepo, OrderItemDetailsRepo>(); //Ingect IOrderItemDetailsRepo
+
+
 
 
             builder.Services.AddAuthentication(

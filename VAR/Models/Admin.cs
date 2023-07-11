@@ -5,7 +5,7 @@ namespace VAR.Models
 {
     public class Admin
     {
-        [Key]
+        
         public int Id { get; set; }
 
         [Required]
@@ -16,8 +16,8 @@ namespace VAR.Models
         public string password { get; set; }
 
         [Required]
-        [RegularExpression("^01[0125][0-9]{8}$" 
-            , ErrorMessage = "Phone muststart with 011 or 012 or 010 or 015 and must be 11 numbers") ]
+        [RegularExpression("^01[0125][0-9]{8}$"
+            , ErrorMessage = "Phone muststart with 011 or 012 or 010 or 015 and must be 11 numbers")]
         public int phone { get; set; }
 
         [EmailAddress]

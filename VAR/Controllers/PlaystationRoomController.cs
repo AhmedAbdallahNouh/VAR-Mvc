@@ -27,6 +27,8 @@ namespace VAR.Controllers
         public async Task<IActionResult> getRoomById(int id)
         {
             Playstation? playstation = await _playstationRepo.getById(id);
+            Order order = new Order();
+            ViewBag.order = order;
             if (playstation != null) return View(playstation);
             else return View("Error");
         }

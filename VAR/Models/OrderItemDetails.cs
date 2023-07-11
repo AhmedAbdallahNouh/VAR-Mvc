@@ -7,11 +7,11 @@ namespace VAR.Models
       
         [ForeignKey("Order")]
         public int orderId { get; set; }
-        public virtual Order Order { get; set; }
+        public virtual Order? Order { get; set; }
 
         [ForeignKey("Item")]
         public int itemId { get; set; }
-        public virtual Item Item { get; set; }
+        public virtual Item? Item { get; set; }
 
         public int Quantity { get; set; }
 
