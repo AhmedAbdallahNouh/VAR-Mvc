@@ -21,12 +21,28 @@ namespace VAR.Repositries
         {
             return await dbContext.Admins.Include(a => a.Orders).SingleOrDefaultAsync(a => a.Id == id);
         }
+        public async Task<Admin?> add(Admin admin)
+        {
+            await dbContext.AddAsync(admin);
+            await dbContext.SaveChangesAsync();
+            return admin;
+        }
         public async Task<Admin?> edit(Admin admin)
         {
             dbContext.Update(admin);
             await dbContext.SaveChangesAsync();
             return admin;
         }
-
+        public async Task<Admin?> delete(int id)
+        {
+            Admin? admin = await getById(id);
+            if (admin != null)
+            {
+                dbContext.Remove(admin);
+                await dbContext.SaveChangesAsync();
+            }
+            return admin;
+        }
     }
 }
+

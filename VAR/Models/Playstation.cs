@@ -19,13 +19,11 @@ namespace VAR.Models
         public string Version { get; set; }
 
         [Required]
-        [MaxLength(50)]
         [DisplayName("Single Price")]
         public int SinglePrice { get; set; }
 
 
         [Required]
-        [MaxLength(50)]
         [DisplayName("Multi Price")]
         public int MultiPrice { get; set; }
 

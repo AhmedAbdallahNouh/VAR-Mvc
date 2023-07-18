@@ -24,6 +24,10 @@ namespace VAR.Controllers
             if (playstations != null) return View(playstations);
             else return View("Error");
         }
+        public async Task<IActionResult> getAllRoomsForAdmin()
+        {
+           return await getAllRooms();
+        }
         public async Task<IActionResult> getRoomById(int id)
         {
             Playstation? playstation = await _playstationRepo.getById(id);
@@ -32,5 +36,51 @@ namespace VAR.Controllers
             if (playstation != null) return View(playstation);
             else return View("Error");
         }
+
+        [HttpGet]
+        public IActionResult AddPlaystationRoom()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPlaystationRoom(Playstation playstationRoomToAdd)
+        {
+            if (ModelState.IsValid)
+            {
+                Playstation? playstation = await _playstationRepo.add(playstationRoomToAdd);
+                return RedirectToAction("getAllRooms");
+            }
+            return View();
+
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            Playstation? playstation = await _playstationRepo.getById(id);
+            if (playstation == null)
+            {
+                return NotFound();
+            }
+            return View(playstation);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(Playstation playstation)
+        {
+            if (ModelState.IsValid)
+            {
+                await _playstationRepo.edit(playstation);
+                return RedirectToAction("getAllRooms");
+            }
+            return View(playstation);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await _playstationRepo.delete(id);
+            return RedirectToAction("getAllRooms");
+        }
+
     }
 }

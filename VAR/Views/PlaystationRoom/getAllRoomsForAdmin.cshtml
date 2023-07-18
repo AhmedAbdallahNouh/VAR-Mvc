@@ -1,0 +1,75 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = "_AdimnLayout";
+}
+@model List<Playstation>
+
+<a class="btn btn-secondary" asp-action="AddPlaystationRoom" asp-controller="PlaystationRoom">Add New Playstation Room</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>RoomName</th>
+            <th>Version</th>
+            <th>SinglePrice</th>
+            <th>MultiPrice</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var playstation in Model)
+        {
+            <tr>
+                <td>@playstation.RoomName</td>
+                <td>@playstation.Version</td>
+                <td>@playstation.SinglePrice</td>
+                <td>@playstation.MultiPrice</td>
+                <td><a class="btn btn-warning" asp-action="Edit" asp-controller="PlaystationRoom" asp-route-id="@playstation.Id">Edit</a></td>
+                <td>
+                    <button type="button" class="order-btn btn  btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-rowid="@playstation.Id">
+                    Delete
+                    </button>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+@*<!-- Button trigger modal onclick="showOrder()" onclick="confirmOrder()" -->
+<button type="button"  class="order-btn btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    Launch static backdrop modal
+</button>*@
+
+<!-- Modal -->
+<div class="modal fade  modal-lg" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="modal-body">
+               <P>Are you Sure</P>
+            </div>
+            <div class="modal-footer">
+                <button  id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirm-delete-item"  type="button" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts{
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="/js/ReservePlaystationRoom.js"></script>
+    <script src="/js/Item.js"></script>*@
+    <script src="/AdminDashboard/js/playstationRoomAdminDashboard.js"></script>
+
+
+}

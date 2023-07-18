@@ -15,11 +15,9 @@ namespace VAR.Models
         public string Type { get; set; }
 
         [Required]
-        [MaxLength(50)]
         public double Price { get; set; }
 
         [Required]
-        [MaxLength(50)]
         public int InStock { get; set; }
 
     }

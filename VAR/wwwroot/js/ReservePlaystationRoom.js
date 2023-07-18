@@ -244,10 +244,11 @@ var adminId = getCookie("AdminId");
 async function confirmOrder()
 {
     console.log(adminId);
+    if (playstationRoomId === undefined) playstationRoomId = null
     var orderToAdd = {
 
-        StartTime: `${startTime.toLocaleDateString('en-US')} ${startTime.toLocaleTimeString('en-US').substring(0, 10)}`,
-        EndTime: `${stopTime.toLocaleDateString('en-US')} ${stopTime.toLocaleTimeString('en-US').substring(0, 10)}`,
+        StartTime: startTime ? `${startTime.toLocaleDateString('en-US')} ${startTime.toLocaleTimeString('en-US').substring(0, 10)}` : null,
+        EndTime: stopTime?`${stopTime.toLocaleDateString('en-US')} ${stopTime.toLocaleTimeString('en-US').substring(0, 10)}` : null,
         adminID: adminId,
         playstationID: parseInt(playstationRoomId)
     };
@@ -269,6 +270,7 @@ async function confirmOrder()
 
         if (response.ok) {
             result = await response.json();
+            window.location.href = "http://localhost:32719/PlaystationRoom/getallrooms";
             console.log(result);
         } else {
             throw new Error(`HTTP Error: ${response.status}`);
@@ -315,6 +317,8 @@ async function confirmOrder()
                 {
                     const result1 = await response1.json();
                     console.log(result1);
+                    window.location.href = "http://localhost:32719/PlaystationRoom/getallrooms";
+    
                 } else {
                     throw new Error(`HTTP Error: ${response1.status}`);
                 }

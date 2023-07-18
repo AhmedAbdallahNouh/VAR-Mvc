@@ -31,10 +31,22 @@ namespace VAR.Controllers
             {
                 OrderItemDetails? orderItemDetails = await orderItemDetailsRepo.Add(orderItemDetailsToAdd);
                 return Json(orderItemDetailsToAdd);
+                
             }
             return View("Error");
 
         }
+        [HttpPost]
+        public async Task<IActionResult> AddJustItemsOrder([FromForm] OrderItemDetails orderItemDetailsToAdd)
+        {
+            if (ModelState.IsValid)
+            {
+                OrderItemDetails? orderItemDetails = await orderItemDetailsRepo.Add(orderItemDetailsToAdd);
+                return Json(orderItemDetailsToAdd);
 
+            }
+            return View("Error");
+
+        }
     }
 }

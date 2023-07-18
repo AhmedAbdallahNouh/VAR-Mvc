@@ -6,6 +6,8 @@ namespace VAR.Repositries
     {
         Task<List<Playstation>?> getAll();
         Task<Playstation?> edit(Playstation playstation);
+        Task<Playstation?> add(Playstation playstation);
         Task<Playstation?> getById(int id);
+        Task<Playstation?> delete(int id);
     }
 }

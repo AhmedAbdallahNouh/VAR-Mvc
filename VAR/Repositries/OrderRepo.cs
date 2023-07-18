@@ -15,12 +15,12 @@ namespace VAR.Repositries
         }
         public async Task<List<Order>> getAll()
         {
-            return await dbContext.Orders.ToListAsync();
+            return await dbContext.Orders.Include(o=> o.Admin).Include(o=>o.Playstation).ToListAsync();
         }
 
         public async Task<Order?> getById(int id)
         {
-            return await dbContext.Orders.SingleOrDefaultAsync(o => o.Id == id);
+            return await dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation).SingleOrDefaultAsync(o => o.Id == id);
         }
         //public async Task<Item?> getByNumber(int number)
         //{
@@ -31,8 +31,8 @@ namespace VAR.Repositries
 
             Order order = new Order()
             {
-                StartTime = DateTime.Parse(orderVM.StartTime),
-                EndTime = DateTime.Parse(orderVM.EndTime),
+                StartTime = orderVM.StartTime !=null ? DateTime.Parse(orderVM.StartTime):null,
+                EndTime = orderVM.EndTime != null ? DateTime.Parse(orderVM.EndTime) : null ,
                 adminID = orderVM.adminID,
                 playstationID = orderVM.playstationID
             };
@@ -48,10 +48,14 @@ namespace VAR.Repositries
             return order;
         }
 
-        public async Task<Order?> delete(Order order)
+        public async Task<Order?> delete(int id)
         {
-            dbContext.Remove(order);
-            await dbContext.SaveChangesAsync();
+            Order? order = await getById(id);
+            if (order != null)
+            {
+                dbContext.Remove(order);
+                await dbContext.SaveChangesAsync();
+            }
             return order;
         }
     }

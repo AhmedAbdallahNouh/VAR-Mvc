@@ -2,15 +2,56 @@
 var selectItem = document.getElementById("select-item");
 var startBtn = document.getElementById("startBtn");
 
+var playstationRoomId = window.location.pathname.split('/')[3];
 
 var addBttn = document.getElementById("add");
 var addItemBttn = document.getElementById("add-item");
-var tableData = JSON.parse(localStorage.getItem('tableData'));
+var tableData = playstationRoomId != undefined ? JSON.parse(localStorage.getItem(`oredrItemsForRoom(${playstationRoomId})`))
+                                               : JSON.parse(localStorage.getItem('justOrderItems'))
+console.log(tableData);
+var itemsCart = document.getElementById("items-cart");
 
-$/*(document).ready(function () {*/
-// your code here
-if (tableData != null) {
+var tableBody;
+// to delet item from iems table
+// Add event listener to table to listen for clicks on "Delete" buttons
+$('table').on('click', '.delete-item', function () {
+     tableBody = document.getElementById("table-body");
 
+    
+    var row = $(this).closest('tr');
+
+    // get name of item which will delte to update tableData
+    var rowItemName = row.find('td:first').text();
+    console.log(rowItemName)
+    //Update tableData
+    let index = tableData.findIndex(item => item.name === rowItemName);
+
+    if (index !== -1) {
+        tableData.splice(index, 1);
+
+        // Save table data to local storage
+        playstationRoomId != undefined
+            ? localStorage.setItem(`oredrItemsForRoom(${playstationRoomId})`, JSON.stringify(tableData))
+            : localStorage.setItem("justOrderItems", JSON.stringify(tableData));
+    }
+    // Delete closest row when "Delete" button is clicked
+    row.remove();
+    // Check if table body has any rows left
+    if (tableBody.rows.length == 0) {
+        // If there are no more rows in the table body, delete the entire table
+        //$('table').remove();
+        itemCart.innerHTML = "";
+        console.log("lastrow");
+
+    }
+    console.log("delete");
+});
+
+
+
+
+if (tableData != null && tableData.length!=0) {
+    
     //addItemBttn.click();
 
     $.ajax({
@@ -28,6 +69,11 @@ if (tableData != null) {
                     $("<td>").text(tableData[i].price).appendTo(row);
                     $("<td>").text(tableData[i].Quantity).appendTo(row);
                     $("<td>").text(tableData[i]["Total Price"]).appendTo(row);
+                    $('<td>').append($('<button>', {
+                        class: 'delete-item btn btn-danger',
+                        id: 'delete-item',
+                        text: 'Delete'
+                    })).appendTo(row);
                     row.appendTo("#table-body");
                 };
             }
@@ -57,7 +103,6 @@ addItemBttn.addEventListener("click", () => {
     //console.log("from item js", itemList);
 
 
-    var itemsCart = document.getElementById("items-cart");
     var MaxQuantityItem = -1;
 
     function setMaxQuantityItem() {
@@ -133,7 +178,10 @@ addItemBttn.addEventListener("click", () => {
         };
 
         // Save table data to local storage
-        localStorage.setItem('tableData', JSON.stringify(tableData));
+        playstationRoomId != undefined
+        ? localStorage.setItem(`oredrItemsForRoom(${playstationRoomId})`, JSON.stringify(tableData))
+        : localStorage.setItem("justOrderItems", JSON.stringify(tableData));
+
     };
 
 
@@ -164,6 +212,12 @@ addItemBttn.addEventListener("click", () => {
                         $("<td>").text(selectedItem.price).appendTo(row);
                         $("<td>").text(itemQuantityNumInput.value).appendTo(row);
                         $("<td>").text(selectedItem.price * itemQuantityNumInput.value).appendTo(row);
+                        $('<td>').append($('<button>', {
+                        class: 'delete-item btn btn-danger',
+                        id: 'delete-item',
+                        text: 'Delete'
+                        })).appendTo(row);
+
 
                         row.appendTo("#table-body");
                         setMaxQuantityItem();
@@ -173,7 +227,7 @@ addItemBttn.addEventListener("click", () => {
 
                 }
                 else {
-                    var tableBody = document.getElementById("table-body");
+                    tableBody = document.getElementById("table-body");
                     console.log("lenght", tableBody.rows.length);
 
                     for (let i = 0; i < tableBody.rows.length; i++) {
@@ -207,7 +261,11 @@ addItemBttn.addEventListener("click", () => {
                         $("<td>").text(selectedItem.price).appendTo(row);
                         $("<td>").text(itemQuantityNumInput.value).appendTo(row);
                         $("<td>").text(selectedItem.price * itemQuantityNumInput.value).appendTo(row);
-
+                        $('<td>').append($('<button>', {
+                            class: 'delete-item btn btn-danger',
+                            id: 'delete-item',
+                            text: 'Delete'
+                        })).appendTo(row);
                         row.appendTo("#table-body");
 
                         //set Max Quantity withe the item Quantity inStock

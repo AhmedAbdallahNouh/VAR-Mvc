@@ -17,7 +17,7 @@ namespace VAR.Repositries
         }
         public async Task<List<Item>> getAllInStock()
         {
-            return await dbContext.Items.Where(i => i.Price != 0).ToListAsync();
+            return await dbContext.Items.Where(i => i.InStock != 0).ToListAsync();
         }
         public async Task<Item?> getById(int id)
         {
@@ -27,10 +27,27 @@ namespace VAR.Repositries
         {
             return await dbContext.Items.SingleOrDefaultAsync(i => i.Name == name);
         }
+        public async Task<Item?> Add(Item item)
+        {
+            await dbContext.Items.AddAsync(item);
+            await dbContext.SaveChangesAsync();
+            return item;
+        }
         public async Task<Item?> edit(Item item)
         {
-            dbContext.Update(item);
+            dbContext.Items.Update(item);
             await dbContext.SaveChangesAsync();
+            return item;
+        }
+
+        public async Task<Item?> delete(int id)
+        {
+            Item? item = await getById(id);
+            if (item != null)
+            {
+                dbContext.Remove(item);
+                await dbContext.SaveChangesAsync();
+            }
             return item;
         }
     }

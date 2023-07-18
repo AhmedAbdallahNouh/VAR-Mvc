@@ -8,9 +8,9 @@ namespace VAR.Models
         public int Id { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
         [DataType(DataType.Date)]
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
         //Relations
 
@@ -19,7 +19,7 @@ namespace VAR.Models
         public virtual Admin? Admin { get; set; }
 
         [ForeignKey("Playstation")]
-        public int playstationID { get; set; }
+        public int? playstationID { get; set; }
         public Playstation? Playstation { get; set; }
     }
 }
