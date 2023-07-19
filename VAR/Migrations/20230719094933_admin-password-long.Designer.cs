@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VAR.Models;
 
@@ -11,9 +12,11 @@ using VAR.Models;
 namespace VAR.Migrations
 {
     [DbContext(typeof(VarDbContext))]
-    partial class VarDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230719094933_admin-password-long")]
+    partial class adminpasswordlong
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,10 +46,8 @@ namespace VAR.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("phone")
-                        .IsRequired()
-                        .HasMaxLength(11)
-                        .HasColumnType("nvarchar(11)");
+                    b.Property<long>("phone")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 

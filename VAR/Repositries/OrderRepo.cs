@@ -18,6 +18,14 @@ namespace VAR.Repositries
             return await dbContext.Orders.Include(o=> o.Admin).Include(o=>o.Playstation).ToListAsync();
         }
 
+        public List<Order> getOrdersPagination(int page, int size)
+        {
+            var total = dbContext.Orders.Count();
+            var pages = (int)Math.Ceiling((decimal)total / size);
+
+            var result = (dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation)).Skip((page - 1) * size).Take(size).ToList();
+            return result;
+        }
         public async Task<Order?> getById(int id)
         {
             return await dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation).SingleOrDefaultAsync(o => o.Id == id);

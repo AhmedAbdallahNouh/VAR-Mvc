@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VAR.Models;
 
@@ -11,9 +12,11 @@ using VAR.Models;
 namespace VAR.Migrations
 {
     [DbContext(typeof(VarDbContext))]
-    partial class VarDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230719100214_make-admin-password-string-to-start-with-0")]
+    partial class makeadminpasswordstringtostartwith0
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -4,31 +4,31 @@
 @{
     Layout = "_AdimnLayout";
 }
-@model List<Admin>
+@model List<Order>
 
-<a class="btn btn-secondary" asp-action="addAdmin" asp-controller="Admin">Add New Item</a>
+<a class="btn btn-secondary" asp-action="AddItem" asp-controller="Item">Add New Item</a>
 
 <table>
     <thead>
         <tr>
-            <th>Name</th>
-            <th>password</th>
-            <th>Price</th>
-            <th>Email</th>
+            <th>StartTime</th>
+            <th>EndTime</th>
+            <th>Admin Name</th>
+            <th>Playstation Room</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Name</td>
-                <td>@item.password</td>
-                <td>@item.phone</td>
-                <td>@item.Email</td>
-                <td><a class="btn btn-warning" asp-action="Edit" asp-controller="Admin" asp-route-id="@item.Id">Edit</a></td>
+                <td>@item.StartTime</td>
+                <td>@item.EndTime</td>
+                <td>@item.Admin.Name</td>
+                <td>@item.Playstation.RoomName</td>
+                <td><a class="btn btn-warning" asp-action="Edit" asp-controller="Item" asp-route-id="@item.Id">Edit</a></td>
                 <td>
-                    <button type="button" class="admin-btn btn  btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-rowid="@item.Id">
-                        Delete
+                    <button type="button" class="order-btn btn  btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-rowid="@item.Id">
+                    Delete
                     </button>
                 </td>
 
@@ -51,11 +51,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modal-body">
-                <P>Are you Sure</P>
+               <P>Are you Sure</P>
             </div>
             <div class="modal-footer">
-                <button id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id="confirm-delete-admin" type="button" class="btn btn-primary">Confirm</button>
+                <button  id="cancel" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button id="confirm-delete-item"  type="button" class="btn btn-primary">Confirm</button>
             </div>
         </div>
     </div>
@@ -69,7 +69,7 @@
     <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="/js/ReservePlaystationRoom.js"></script>
     <script src="/js/Item.js"></script>*@
-    <script src="/AdminDashboard/js/Admin-AdminDashboard.js"></script>
+    @*<script src="/AdminDashboard/js/itemAdminDashboard.js"></script>*@
 
 
 }

@@ -29,6 +29,13 @@ namespace VAR.Controllers
             List<Order> orders = await orderRepo.getAll();
             return View(orders);
         }
+        public IActionResult getOrdersPagination(int page = 1, int size = 10)
+        {
+
+            List<Order> orders = orderRepo.getOrdersPagination(page, size);
+            return View(orders);
+
+        }
         public async Task<IActionResult> getAllOrderById(int id)
         {
             Order? order = await orderRepo.getById(id);

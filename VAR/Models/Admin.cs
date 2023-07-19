@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
 
 namespace VAR.Models
 {
@@ -13,12 +14,14 @@ namespace VAR.Models
         public string Name { get; set; }
 
         [Required]
+        [PasswordPropertyText]
         public string password { get; set; }
 
         [Required]
-        [RegularExpression("^01[0125][0-9]{8}$"
+        [MaxLength(11)]
+        [RegularExpression("^(011|012|010|015)\\d{8}$"
             , ErrorMessage = "Phone muststart with 011 or 012 or 010 or 015 and must be 11 numbers")]
-        public int phone { get; set; }
+        public string phone { get; set; }
 
         [EmailAddress]
         public string Email { get; set; }
