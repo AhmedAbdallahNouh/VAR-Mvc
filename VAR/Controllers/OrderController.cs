@@ -15,7 +15,7 @@ namespace VAR.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            return View("ordersPagination");
         }
 
         public IActionResult OrderModal()
@@ -32,8 +32,9 @@ namespace VAR.Controllers
         public IActionResult getOrdersPagination(int page = 1, int size = 10)
         {
 
-            List<Order> orders = orderRepo.getOrdersPagination(page, size);
-            return View(orders);
+           PaginationVM paginationVM = orderRepo.getOrdersPagination(page, size);
+           
+            return View(paginationVM);
 
         }
         public async Task<IActionResult> getAllOrderById(int id)

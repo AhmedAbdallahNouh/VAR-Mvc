@@ -19,6 +19,8 @@
     <!-- Custom styles for this template-->
     <link href="~/AdminDashboard/css/sb-admin-2.min.css" rel="stylesheet">
 
+     <!-- Custom styles for this page -->
+    <link href="~/AdminDashboard/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 </head>
 
 <body id="page-top">
@@ -369,10 +371,14 @@
 
                 </nav>
                 <!-- End of Topbar -->
+                <!-- Render Body-->
+                
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <!-- Page Heading -->
+                    <div class="container">
+                    @RenderBody()
+                </div>
+                   @* <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                         <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
@@ -380,10 +386,7 @@
                         </a>
                     </div>
 
-                     <!-- Render Body-->
-                     <div class="container">
-                     @RenderBody()
-                     </div>
+                   
 
                     <!-- Content Row -->
 
@@ -684,7 +687,7 @@
                                     <div class="text-center">
                                       @*  <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;"
                                              src="AdminDashboard/img/undraw_posting_photo.svg" alt="...">*@
-                                    </div>
+                                  @*  </div>
                                     <p>
                                         Add some quality, svg illustrations to your project courtesy of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>, a
                                         constantly updated collection of beautiful svg images that you can use
@@ -695,10 +698,10 @@
                                         unDraw &rarr;
                                     </a>
                                 </div>
-                            </div>
+                            </div>*@
 
                             <!-- Approach -->
-                            <div class="card shadow mb-4">
+                           @* <div class="card shadow mb-4">
                                 <div class="card-header py-3">
                                     <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
                                 </div>
@@ -716,12 +719,13 @@
                             </div>
 
                         </div>
-                    </div>
+                    </div>*@
 
                 </div>
                 <!-- /.container-fluid -->
 
             </div>
+
             <!-- End of Main Content -->
             <!-- Footer -->
             <footer class="sticky-footer bg-white">

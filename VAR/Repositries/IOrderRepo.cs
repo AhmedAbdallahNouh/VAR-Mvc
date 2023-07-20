@@ -9,7 +9,7 @@ namespace VAR.Repositries
         Task<Order?> delete(int id);
         Task<Order?> edit(Order order);
         Task<List<Order>> getAll();
-        List<Order> getOrdersPagination(int page, int size);
+        PaginationVM getOrdersPagination(int page, int size);
         Task<Order?> getById(int id);
     }
 }
