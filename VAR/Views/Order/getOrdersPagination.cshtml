@@ -8,9 +8,34 @@
 }
 @model PaginationVM
 
-<a class="btn btn-secondary" asp-action="AddItem" asp-controller="Item">Add New Item</a>
+<a class="btn btn-secondary" asp-action="AddItem" asp-controller="Item">Add New Item</a> 
 
-<table>
+<button id="filter-by-room" class="btn btn-secondary" >Room</button>
+<button id="filter-by-admin" class="btn btn-secondary">Admin</button>
+<div class="row">
+    <label for="date" class="col-1 col-form-label">Date</label>
+    <div class="col-5">
+        <input type="date" class="form-control" id="date"/>      
+    </div>
+</div>
+
+<div class="row">
+    <label for="room-name" class="col-1 col-form-label">Room</label>
+    <div class="col-5">
+        <input type="text" class="form-control" id="room-name"/>      
+    </div>
+</div>
+
+<div class="row">
+<label for="admin-name" class="col-1 col-form-label">Admin</label>
+<div class="col-5">
+        <input type="text" class="form-control" id="admin-name" />
+</div>
+</div>
+
+<button id="filter-by-date" class="btn btn-secondary">Apply Date</button>
+
+<table id="orders-table">
     <thead>
         <tr>
             <th>StartTime</th>

@@ -1,23 +1,129 @@
 ﻿
-//var pageNumber;
-//// Attach a click event listener to all delete buttons
-//const tablePageNumButtons = document.querySelectorAll('.page-link');
-//var tablePageNumLis = document.querySelectorAll('.page-item');
 
-//tablePageNumButtons.forEach(button => {
-//    button.addEventListener('click', () => {
-//        // Get the ID of the item to be deleted from the data-rowid attribute
-//        tablePageNumLis.forEach(function (elementLi) {
-//            elementLi.classList.add('active');
+class TableRow {
+    constructor(startTime, endTime, adminName, playstationRoom) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.adminName = adminName;
+        this.playstationRoom = playstationRoom;
 
-//        });
+    }
+};
 
-//        pageNumber = button.innerHTML;
-//        console.log(pageNumber);
-//        //window.location.href = `http://localhost:32719/Order/getOrdersPagination/?page=${pageNumber}&size=10`;
+// get the orders table data to aplly ordering (by : Month, year, adminID ,....) in it
+var table = document.getElementById("orders-table");
+console.log("table", table);
+var tbody = table.getElementsByTagName("tbody")[0];
+console.log("tbody", tbody);
 
-//    });
-//});
+var rows = tbody.getElementsByTagName("tr");
+console.log("rows", rows);
+
+
+
+const data = [];
+
+for (let i = 0; i < rows.length; i++) {
+    const cells = rows[i].getElementsByTagName("td");
+    const startTime = cells[0].innerText;
+    const endTime = parseInt(cells[1].innerText);
+    const adminName = cells[2].innerText;
+    const playstationRoom = cells[3].innerText;
+    const rowData = new TableRow(startTime, endTime, adminName, playstationRoom);
+    data.push(rowData);
+}
+
+
+
+console.log("original array", data);
+
+const filteredDataByAdmin = data.filter(row => row.adminName === "Hazem");
+console.log("fiterd array", filteredDataByAdmin);
+
+const filteredDataByPlaystationRoom = data.filter(row => row.playstationRoom === "Liverpool");
+console.log("fiterd array", filteredDataByPlaystationRoom);
+
+const filteredDataByMonth = data.filter(row => row.startTime.split("/")[0] === "4" && row.startTime.split("/")[2].split(" ")[0] === "2023");
+console.log("fiterd array by month", filteredDataByMonth);
+
+const targetYear = '2023'
+const filteredDataByYear = data.filter(row => {
+    const startTime = row.startTime;
+    if (!startTime) {
+        return false;
+    }
+    const year = startTime.split('/')[2].split(' ')[0];
+    return year === targetYear;
+});
+
+console.log("fiterd array by year", filteredDataByYear);
+
+
+var filterByRoomNameBtn = document.getElementById("filter-by-room");
+var filterByAdminBtn = document.getElementById("filter-by-admin");
+
+const ApplyFilterBtn = document.getElementById("filter-by-date");
+
+
+function filterBy(filterdArray) {
+    // Clear the table body
+    tbody.innerHTML = "";
+
+    // Loop through the filtered data and create new rows and cells
+    filterdArray.forEach(row => {
+        const newRow = tbody.insertRow();
+        const startTimeCell = newRow.insertCell();
+        startTimeCell.innerText = row.startTime;
+        const endTimeCell = newRow.insertCell();
+        endTimeCell.innerText = row.endTime;
+        const adminNameCell = newRow.insertCell();
+        adminNameCell.innerText = row.adminName;
+        const playstationRoomCell = newRow.insertCell();
+        playstationRoomCell.innerText = row.playstationRoom;
+    });
+}
+
+const dateInput = document.getElementById("date");
+const AdminNameInput = document.getElementById("admin-name");
+const RoomNameInput = document.getElementById("room-name");
+
+// split the dateInput value in array of year , month , day ex : '18-04-2023' => ['18','04','2023']
+var dateInputValueAsArrayOfDate ;
+console.log(dateInputValueAsArrayOfDate);
+
+ApplyFilterBtn.addEventListener("click", function () {
+    dateInputValueAsArrayOfDate = dateInput.value.split('-').reverse();
+    console.log(dateInputValueAsArrayOfDate);
+    var filteredDataByDay = data.filter(row => row.startTime.split("/")[1] === dateInputValueAsArrayOfDate[0] && row.startTime.split("/")[0] === dateInputValueAsArrayOfDate[1].slice(1)
+    && row.startTime.split("/")[2].split(" ")[0] === dateInputValueAsArrayOfDate[2]);
+    console.log("fiterd array by day", filteredDataByDay);
+    if ( RoomNameInput.value != "") {
+       filteredDataByDay = filteredDataByDay.filter(row => row.playstationRoom == RoomNameInput.value);
+        console.log("fiterd array by day and room", filteredDataByDay);
+    }
+    if (AdminNameInput.value != "") {
+        filteredDataByDay = filteredDataByDay.filter(row => row.adminName == AdminNameInput.value);
+        console.log("fiterd array by day and room and admin", filteredDataByDay);
+    }
+    if (filteredDataByDay.length != 0) filterBy(filteredDataByDay)
+
+});
+
+filterByRoomNameBtn.addEventListener("click", function () {
+    filterBy(filteredDataByPlaystationRoom);
+});
+
+filterByAdminBtn.addEventListener("click", function () {
+    filterBy(filteredDataByAdmin);
+});
+
+
+
+
+
+
+
+
 
 var pageNumber;
 
