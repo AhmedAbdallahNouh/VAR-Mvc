@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using VAR.Models;
 using VAR.Repositries;
 using VAR.ViewModels;
@@ -8,10 +9,17 @@ namespace VAR.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRepo orderRepo;
+        private readonly IPlaystationRepo playstationRepo;
+        private readonly IAdminRepo adminRepo;
 
-        public OrderController(IOrderRepo orderRepo)
+
+        public OrderController(IOrderRepo orderRepo, IPlaystationRepo playstationRepo, IAdminRepo adminRepo)
         {
             this.orderRepo = orderRepo;
+            this.playstationRepo = playstationRepo;
+            this.adminRepo = adminRepo;
+
+
         }
         public IActionResult Index()
         {
@@ -29,20 +37,25 @@ namespace VAR.Controllers
             List<Order> orders = await orderRepo.getAll();
             return View(orders);
         }
-        public IActionResult getOrdersPagination(int page = 1, int size = 10)
+        public async Task<IActionResult>  getOrdersPagination(int page = 1, int size = 10)
         {
+            List<Playstation>? playstationRooms = await playstationRepo.getAll();
+            ViewBag.playstationRooms = new SelectList(playstationRooms, "RoomName", "RoomName");
 
-           PaginationVM paginationVM = orderRepo.getOrdersPagination(page, size);
+            List<Admin>? admins = await adminRepo.getAll();
+            ViewBag.admins = new SelectList(admins, "Name", "Name");
+
+            PaginationVM paginationVM = orderRepo.getOrdersPagination(page, size);
            
             return View(paginationVM);
 
         }
-        public async Task<IActionResult> getAllOrderById(int id)
+        public async Task<IActionResult> getOrderById(int id)
         {
             Order? order = await orderRepo.getById(id);
             return View(order);
         }
-        public async Task<IActionResult> getAllOrderByNumber(int number)
+        public async Task<IActionResult> getOrderByNumber(int number)
         {
             Order? order = await orderRepo.getById(number);
             return View(order);

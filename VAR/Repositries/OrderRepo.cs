@@ -23,13 +23,13 @@ namespace VAR.Repositries
             var total = dbContext.Orders.Count();
             var pages = (int)Math.Ceiling((decimal)total / size);
 
-            var result = (dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation)).Skip((page - 1) * size).Take(size).ToList();
+            var result = (dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation).Include(o => o.OrderItemDetails )).Skip((page - 1) * size).Take(size).ToList();
             PaginationVM paginationVM = new PaginationVM(total, pages, result);
             return paginationVM;
         }
         public async Task<Order?> getById(int id)
         {
-            return await dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation).SingleOrDefaultAsync(o => o.Id == id);
+            return await dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation).Include(o => o.OrderItemDetails).ThenInclude(oid => oid.Item).SingleOrDefaultAsync(o => o.Id == id);
         }
         //public async Task<Item?> getByNumber(int number)
         //{

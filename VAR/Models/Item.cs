@@ -20,5 +20,6 @@ namespace VAR.Models
         [Required]
         public int InStock { get; set; }
 
+        public virtual List<OrderItemDetails>? OrderItemDetails { get; set; }
     }
 }

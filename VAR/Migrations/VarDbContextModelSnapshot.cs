@@ -50,7 +50,7 @@ namespace VAR.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admins", (string)null);
                 });
 
             modelBuilder.Entity("VAR.Models.Item", b =>
@@ -79,7 +79,7 @@ namespace VAR.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items");
+                    b.ToTable("Items", (string)null);
                 });
 
             modelBuilder.Entity("VAR.Models.Order", b =>
@@ -108,7 +108,7 @@ namespace VAR.Migrations
 
                     b.HasIndex("playstationID");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("VAR.Models.OrderItemDetails", b =>
@@ -129,7 +129,7 @@ namespace VAR.Migrations
 
                     b.HasIndex("itemId");
 
-                    b.ToTable("orderItemDetails");
+                    b.ToTable("orderItemDetails", (string)null);
                 });
 
             modelBuilder.Entity("VAR.Models.Playstation", b =>
@@ -158,7 +158,7 @@ namespace VAR.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Playstations");
+                    b.ToTable("Playstations", (string)null);
                 });
 
             modelBuilder.Entity("VAR.Models.Order", b =>

@@ -21,5 +21,7 @@ namespace VAR.Models
         [ForeignKey("Playstation")]
         public int? playstationID { get; set; }
         public Playstation? Playstation { get; set; }
+
+        public virtual List<OrderItemDetails>? OrderItemDetails { get; set; }
     }
 }

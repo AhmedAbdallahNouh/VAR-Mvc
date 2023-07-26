@@ -49,7 +49,7 @@ console.log("fiterd array by month", filteredDataByMonth);
 const targetYear = '2023'
 const filteredDataByYear = data.filter(row => {
     const startTime = row.startTime;
-    if (!startTime) {
+    if (startTime == 'ـــــ' ) {
         return false;
     }
     const year = startTime.split('/')[2].split(' ')[0];
@@ -84,8 +84,8 @@ function filterBy(filterdArray) {
 }
 
 const dateInput = document.getElementById("date");
-const AdminNameInput = document.getElementById("admin-name");
-const RoomNameInput = document.getElementById("room-name");
+const AdminNameSelect = document.getElementById("select-admin");
+const RoomNameSelect = document.getElementById("select-room");
 
 // split the dateInput value in array of year , month , day ex : '18-04-2023' => ['18','04','2023']
 var dateInputValueAsArrayOfDate ;
@@ -97,25 +97,25 @@ ApplyFilterBtn.addEventListener("click", function () {
     var filteredDataByDay = data.filter(row => row.startTime.split("/")[1] === dateInputValueAsArrayOfDate[0] && row.startTime.split("/")[0] === dateInputValueAsArrayOfDate[1].slice(1)
     && row.startTime.split("/")[2].split(" ")[0] === dateInputValueAsArrayOfDate[2]);
     console.log("fiterd array by day", filteredDataByDay);
-    if ( RoomNameInput.value != "") {
-       filteredDataByDay = filteredDataByDay.filter(row => row.playstationRoom == RoomNameInput.value);
+    if (RoomNameSelect.value != "") {
+       filteredDataByDay = filteredDataByDay.filter(row => row.playstationRoom == RoomNameSelect.value);
         console.log("fiterd array by day and room", filteredDataByDay);
     }
-    if (AdminNameInput.value != "") {
-        filteredDataByDay = filteredDataByDay.filter(row => row.adminName == AdminNameInput.value);
+    if (AdminNameSelect.value != "") {
+        filteredDataByDay = filteredDataByDay.filter(row => row.adminName == AdminNameSelect.value);
         console.log("fiterd array by day and room and admin", filteredDataByDay);
     }
     if (filteredDataByDay.length != 0) filterBy(filteredDataByDay)
 
 });
 
-filterByRoomNameBtn.addEventListener("click", function () {
-    filterBy(filteredDataByPlaystationRoom);
-});
+//filterByRoomNameBtn.addEventListener("click", function () {
+//    filterBy(filteredDataByPlaystationRoom);
+//});
 
-filterByAdminBtn.addEventListener("click", function () {
-    filterBy(filteredDataByAdmin);
-});
+//filterByAdminBtn.addEventListener("click", function () {
+//    filterBy(filteredDataByAdmin);
+//});
 
 
 
