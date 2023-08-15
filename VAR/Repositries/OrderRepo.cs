@@ -42,6 +42,8 @@ namespace VAR.Repositries
             {
                 StartTime = orderVM.StartTime !=null ? DateTime.Parse(orderVM.StartTime):null,
                 EndTime = orderVM.EndTime != null ? DateTime.Parse(orderVM.EndTime) : null ,
+                TotalPrice = orderVM.TotalPrice,
+                Discount = orderVM.Discount,
                 adminID = orderVM.adminID,
                 playstationID = orderVM.playstationID
             };

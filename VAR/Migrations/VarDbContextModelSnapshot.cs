@@ -50,7 +50,7 @@ namespace VAR.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Admins", (string)null);
+                    b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("VAR.Models.Item", b =>
@@ -79,7 +79,7 @@ namespace VAR.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Items", (string)null);
+                    b.ToTable("Items");
                 });
 
             modelBuilder.Entity("VAR.Models.Order", b =>
@@ -90,11 +90,17 @@ namespace VAR.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("StartTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<double>("TotalPrice")
+                        .HasColumnType("float");
 
                     b.Property<int>("adminID")
                         .HasColumnType("int");
@@ -108,7 +114,7 @@ namespace VAR.Migrations
 
                     b.HasIndex("playstationID");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("VAR.Models.OrderItemDetails", b =>
@@ -129,7 +135,7 @@ namespace VAR.Migrations
 
                     b.HasIndex("itemId");
 
-                    b.ToTable("orderItemDetails", (string)null);
+                    b.ToTable("orderItemDetails");
                 });
 
             modelBuilder.Entity("VAR.Models.Playstation", b =>
@@ -158,7 +164,7 @@ namespace VAR.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Playstations", (string)null);
+                    b.ToTable("Playstations");
                 });
 
             modelBuilder.Entity("VAR.Models.Order", b =>
@@ -181,13 +187,13 @@ namespace VAR.Migrations
             modelBuilder.Entity("VAR.Models.OrderItemDetails", b =>
                 {
                     b.HasOne("VAR.Models.Item", "Item")
-                        .WithMany()
+                        .WithMany("OrderItemDetails")
                         .HasForeignKey("itemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("VAR.Models.Order", "Order")
-                        .WithMany()
+                        .WithMany("OrderItemDetails")
                         .HasForeignKey("orderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -200,6 +206,16 @@ namespace VAR.Migrations
             modelBuilder.Entity("VAR.Models.Admin", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("VAR.Models.Item", b =>
+                {
+                    b.Navigation("OrderItemDetails");
+                });
+
+            modelBuilder.Entity("VAR.Models.Order", b =>
+                {
+                    b.Navigation("OrderItemDetails");
                 });
 
             modelBuilder.Entity("VAR.Models.Playstation", b =>

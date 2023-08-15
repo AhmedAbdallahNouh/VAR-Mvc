@@ -1,18 +1,21 @@
 ﻿
 @model List<Item>
 
-<label for="select-item">Items</label>
-    <select id="select-item" onchange="setItemNumInStock()" asp-items="ViewBag.Items" class="form-control">
+<div class="col-6 d-flex text-center mb-3 mt-3">
+    <label class="me-1" for="select-item" style="padding-top: 5px;">Items</label>
+    <select class="form-control " id="select-item" onchange="setItemNumInStock()" asp-items="ViewBag.Items">
         <option value="">Choose One</option>
     </select>
+ </div>
 
-   
-    <div class="col-md-2 mt-3 amount text-center">
-    <input id="number" class=" form-control w-100" type="number"  />
-       </div>
+
+<div class="col-6 d-flex amount text-center mb-3 mt-3">
+    <label class="me-1" for="number" style="padding-top: 5px;">Amount</label>
+   <input id="number" class=" form-control w-100" type="number"  />
+ </div>
 
 <div id="add-div">
-    <button id="add">Add</button>
+    <button class="btn btn-primary" id="add">Add</button>
 </div>
 
 <script>

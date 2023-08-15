@@ -7,13 +7,13 @@
     background: #10101E;
     font-family: 'Segoe UI',sans-serif;
     font-size: 60px;
-    width: 340px;
-    padding: 15px 10px;
+    width: 330px;
+    padding: 7px 4px;
     border: 3px solid #2E94E3;
-    border-radius: 5px;
+    border-radius: 23px;
     transition: .5s;
     transition-property: background, box-shadow;
-    -webkit-box-reflect:below 1px linear-grdient(transparent, rgba(255,255,255, 0.1));
+    -webkit-box-reflect: below 1px linear-grdient(transparent, rgba(255,255,255, 0.1));
 }
 
     .timer:hover {

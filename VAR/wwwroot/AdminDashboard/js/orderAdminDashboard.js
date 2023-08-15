@@ -1,4 +1,6 @@
 ﻿
+const noneExistingOrdersFilterAlert = document.getElementById("alert-div");
+//noneExistingOrdersFilterAlert[0].setAttribute("style", "display: none!important;");
 
 class TableRow {
     constructor(startTime, endTime, adminName, playstationRoom) {
@@ -59,10 +61,11 @@ const filteredDataByYear = data.filter(row => {
 console.log("fiterd array by year", filteredDataByYear);
 
 
-var filterByRoomNameBtn = document.getElementById("filter-by-room");
-var filterByAdminBtn = document.getElementById("filter-by-admin");
+var allOrdersBtn = document.getElementById("all-orders");
 
 const ApplyFilterBtn = document.getElementById("filter-by-date");
+const claerFilterBtn = document.getElementById("clear-filter");
+
 
 
 function filterBy(filterdArray) {
@@ -83,6 +86,7 @@ function filterBy(filterdArray) {
     });
 }
 
+
 const dateInput = document.getElementById("date");
 const AdminNameSelect = document.getElementById("select-admin");
 const RoomNameSelect = document.getElementById("select-room");
@@ -91,24 +95,48 @@ const RoomNameSelect = document.getElementById("select-room");
 var dateInputValueAsArrayOfDate ;
 console.log(dateInputValueAsArrayOfDate);
 
+var filteredDataByDay;
 ApplyFilterBtn.addEventListener("click", function () {
     dateInputValueAsArrayOfDate = dateInput.value.split('-').reverse();
     console.log(dateInputValueAsArrayOfDate);
-    var filteredDataByDay = data.filter(row => row.startTime.split("/")[1] === dateInputValueAsArrayOfDate[0] && row.startTime.split("/")[0] === dateInputValueAsArrayOfDate[1].slice(1)
-    && row.startTime.split("/")[2].split(" ")[0] === dateInputValueAsArrayOfDate[2]);
-    console.log("fiterd array by day", filteredDataByDay);
+    if (dateInput.value != '') {
+        filteredDataByDay = data.filter(row => row.startTime.split("/")[1] === dateInputValueAsArrayOfDate[0] && row.startTime.split("/")[0] === dateInputValueAsArrayOfDate[1].slice(1)
+            && row.startTime.split("/")[2].split(" ")[0] === dateInputValueAsArrayOfDate[2]);
+        console.log("fiterd array by day", filteredDataByDay);
+    }
     if (RoomNameSelect.value != "") {
-       filteredDataByDay = filteredDataByDay.filter(row => row.playstationRoom == RoomNameSelect.value);
+        filteredDataByDay = filteredDataByDay == undefined ? data.filter(row => row.playstationRoom == RoomNameSelect.value) : filteredDataByDay.filter(row => row.playstationRoom == RoomNameSelect.value);
         console.log("fiterd array by day and room", filteredDataByDay);
     }
     if (AdminNameSelect.value != "") {
-        filteredDataByDay = filteredDataByDay.filter(row => row.adminName == AdminNameSelect.value);
+        filteredDataByDay = filteredDataByDay == undefined ? data.filter(row => row.adminName == AdminNameSelect.value) : filteredDataByDay.filter(row => row.adminName == AdminNameSelect.value);
         console.log("fiterd array by day and room and admin", filteredDataByDay);
     }
-    if (filteredDataByDay.length != 0) filterBy(filteredDataByDay)
+    
+    if (filteredDataByDay.length != 0) {
+        filterBy(filteredDataByDay);
+        filteredDataByDay = undefined;
+        noneExistingOrdersFilterAlert.setAttribute("style", "display: none!important;");
+
+    }
+    else {
+        filteredDataByDay = undefined;
+        noneExistingOrdersFilterAlert.removeAttribute("style");
+    }
 
 });
 
+//resert the filters
+claerFilterBtn.addEventListener("click", function () {  
+    dateInput.value = '';    
+    RoomNameSelect.value = "";   
+    AdminNameSelect.value = "";
+});
+
+// get all orders by click the current active list from pagination list
+allOrdersBtn.addEventListener("click", function () {
+    currentActiveLi.click();
+})
 //filterByRoomNameBtn.addEventListener("click", function () {
 //    filterBy(filteredDataByPlaystationRoom);
 //});
@@ -227,6 +255,8 @@ pageLinks.forEach(function (pageLink) {
         }
 
         window.location.href = `http://localhost:32719/Order/getOrdersPagination/?page=${pageNumber}&size=10`;
+        //window.location.href = `http://localhost:5208/Order/getOrdersPagination/?page=${pageNumber}&size=10`;
+
 
     });
 });

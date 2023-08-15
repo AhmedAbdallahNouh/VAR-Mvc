@@ -32,45 +32,12 @@ else
         </thead>
         <tbody>
 
-            <tr>
-                @if (Model.StartTime != null)
-                {
-                    <td>@Model.StartTime</td>
-                }
-                else
-                {
-                    <td>ـــــ</td>
-                }
-                @if (Model.EndTime != null)
-                {
-                    <td>@Model.EndTime</td>
-                }
-                else
-                {
-                    <td>ـــــ</td>
-                }
-
-                @if (Model.Admin != null)
-                {
-                    <td>@Model.Admin.Name</td>
-                }
-                else
-                {
-                    <td>ـــــ</td>
-
-                }
-                @if (Model.Playstation != null)
-                {
+            <tr>      
+                    <td>@Model.StartTime</td>                 
+                    <td>@Model.EndTime</td>               
+                    <td>@Model.Admin.Name</td>             
                     <td>@Model.Playstation.RoomName</td>
-                }
-                else
-                {
-                    <td>ـــــ</td>
-                }
-
-
-
-                @*<td><a class="btn btn-warning" asp-action="Edit" asp-controller="Item" asp-route-id="@item.Id">Details</a></td>*@
+                 @*<td><a class="btn btn-warning" asp-action="Edit" asp-controller="Item" asp-route-id="@item.Id">Details</a></td>*@
                 @* <td>
             <button type="button" class="order-btn btn  btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-rowid="@item.Id">
             Delete
@@ -104,9 +71,6 @@ else
                     <td>@OrderItemDetail.Item.Price</td>
                     <td>@OrderItemDetail.Quantity</td>
                     <td>@OrderItemDetail.TotalPrice</td>
-
-                   
-
                 </tr>
             }
         </tbody>
