@@ -50,9 +50,9 @@ namespace VAR.Controllers
             if (ModelState.IsValid)
             {
                 Playstation? playstation = await _playstationRepo.add(playstationRoomToAdd);
-                return RedirectToAction("getAllRooms");
+                return RedirectToAction("getAllRoomsForAdmin");
             }
-            return View();
+            return RedirectToAction("getAllRoomsForAdmin", "PlaystationRoom");
 
         }
 
@@ -66,12 +66,12 @@ namespace VAR.Controllers
             return View(playstation);
         }
         [HttpPost]
-        public async Task<IActionResult> Update(Playstation playstation)
+        public async Task<IActionResult> Edit(Playstation playstation)
         {
             if (ModelState.IsValid)
             {
                 await _playstationRepo.edit(playstation);
-                return RedirectToAction("getAllRooms");
+                return RedirectToAction("getAllRoomsForAdmin");
             }
             return View(playstation);
         }

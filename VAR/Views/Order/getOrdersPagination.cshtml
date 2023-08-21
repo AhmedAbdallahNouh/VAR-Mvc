@@ -11,13 +11,19 @@
 
 <button id="all-orders" class="btn btn-secondary" >All Orders</button>
 <div class="row">
-    <label for="date" class="col-1 col-form-label">Date</label>
+    <label for="date-from" class="col-1 col-form-label">From</label>
     <div class="col-5">
-        <input type="date" class="form-control" id="date"/>      
+        <input type="date" class="form-control" id="date-from"/>      
     </div>
 </div>
 
-<label for="">Items</label>
+<div class="row">
+    <label for="date-to" class="col-1 col-form-label">To</label>
+    <div class="col-5">
+        <input type="date" class="form-control" id="date-to"/>      
+    </div>
+</div>
+
 
 
 <div class="row">
@@ -72,6 +78,7 @@
             <th>Admin Name</th>
             <th>Playstation Room</th>
             <th>Description</th>
+            <th>Total Price</th>
         </tr>
     </thead>
     <tbody>
@@ -125,6 +132,8 @@
                      <td>Just Items</td>
                 }
 
+                <td>@item.TotalPrice</td>
+
                 <td><a class="btn btn-warning" asp-action="getOrderById" asp-controller="Order" asp-route-id="@item.Id">Details</a></td>
                @* <td>
                     <button type="button" class="order-btn btn  btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-rowid="@item.Id">
@@ -139,20 +148,22 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-7">
+      All Orders Total Price = @Model.AllOrdersTotalPrice
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12 col-md-7">
         <nav aria-label="...">
             <ul id="pagination-ul" class="pagination">
                 <li id="pervious-li" class="page-item disabled">
-                    <a class="page-link">Previous</a>
+                    <a class="page-link" href="#">Previous</a>
                 </li>
                 @for(int i =1 ; i<= Model.Page ; i++)
                 {
                     <li class="page-item"><a class="page-link" href="#">@i</a></li>
                 }
-               @* <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item" aria-current="page">
-                    <span class="page-link">2</span>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>*@
+           
                 <li id="next-li" class="page-item">
                     <a class="page-link" href="#">Next</a>
                 </li>

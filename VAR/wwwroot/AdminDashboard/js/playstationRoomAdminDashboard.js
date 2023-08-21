@@ -37,3 +37,40 @@ deleteBtn.addEventListener("click", function () {
         }
     });
 });
+
+//var addBtn = document.getElementById("confirm-add-playstation-room");
+
+//addBtn.addEventListener("click", function () {
+//    var playstationRoomToAdd = {
+
+//        StartTime: startTime ? `${startTime.toLocaleDateString('en-US')} ${startTime.toLocaleTimeString('en-US').substring(0, 10)}` : null,
+//        EndTime: stopTime ? `${stopTime.toLocaleDateString('en-US')} ${stopTime.toLocaleTimeString('en-US').substring(0, 10)}` : null,
+//        TotalPrice: orderTotalPriceValueAfterDiscount,
+//        Discount: parseFloat(discount.value),
+//        adminID: adminId,
+//        playstationID: parseInt(playstationRoomId)
+//    };
+//    try {
+//        const response = await fetch("/Order/AddOrderDB", {
+
+//            method: "POST",
+//            headers: {
+//                "Content-type": "application/json; charset=UTF-8"
+//            },
+
+//            body: JSON.stringify(orderToAdd)
+//        });
+
+//        if (response.ok) {
+//            result = await response.json();
+//            window.location.href = "http://localhost:32719/PlaystationRoom/getallrooms";
+//            console.log(result);
+//        } else {
+//            throw new Error(`HTTP Error: ${response.status}`);
+//        }
+//    }
+//    catch (error) {
+//        console.error(error);
+//    }
+//});
+

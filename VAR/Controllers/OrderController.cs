@@ -18,8 +18,6 @@ namespace VAR.Controllers
             this.orderRepo = orderRepo;
             this.playstationRepo = playstationRepo;
             this.adminRepo = adminRepo;
-
-
         }
         public IActionResult Index()
         {
@@ -28,7 +26,6 @@ namespace VAR.Controllers
 
         public IActionResult OrderModal()
         {
-
             return PartialView("_orderModal");
         }
 
@@ -37,7 +34,7 @@ namespace VAR.Controllers
             List<Order> orders = await orderRepo.getAll();
             return View(orders);
         }
-        public async Task<IActionResult>  getOrdersPagination(int page = 1, int size = 10)
+        public async Task<IActionResult>  GetOrdersPagination(int page = 1, int size = 10)
         {
             List<Playstation>? playstationRooms = await playstationRepo.getAll();
             ViewBag.playstationRooms = new SelectList(playstationRooms, "RoomName", "RoomName");
@@ -50,6 +47,25 @@ namespace VAR.Controllers
             return View(paginationVM);
 
         }
+        public IActionResult getFilteredOrdersPaginationRedirectUrl([FromBody] FilteredOrdersPaginationVM filteredOrdersPaginationVM)
+        {       
+            var redirectUrl = Url.Action("getFilteredOrdersPagination", "Order", filteredOrdersPaginationVM);
+            return Json(new { redirectUrl });
+        }
+        public async Task<IActionResult> getFilteredOrdersPagination([FromQuery] FilteredOrdersPaginationVM filteredOrdersPaginationVM)
+        {
+            List<Playstation>? playstationRooms = await playstationRepo.getAll();
+            ViewBag.playstationRooms = new SelectList(playstationRooms, "RoomName", "RoomName");
+
+            List<Admin>? admins = await adminRepo.getAll();
+            ViewBag.admins = new SelectList(admins, "Name", "Name");
+
+            PaginationVM paginationVM = orderRepo.GetFilteredOrdersPagination(filteredOrdersPaginationVM);
+
+            return View("getOrdersPagination", paginationVM);
+
+        }
+
         public async Task<IActionResult> getOrderById(int id)
         {
             Order? order = await orderRepo.getById(id);

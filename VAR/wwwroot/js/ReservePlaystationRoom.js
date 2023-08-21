@@ -39,6 +39,7 @@ function timer() {
         console.log("from if");
         timerSecond.innerHTML = `00`;
         timerMinute.innerHTML = `${specificTimeMinuteInput.value}`;
+        //timerMinute.innerHTML = `20`;
         timerHour.innerHTML = `${specificTimeHourInput.value}`;
         stopBtn.click();
     }
@@ -71,6 +72,37 @@ function timer() {
 
 }
 
+function updateTimerInnerHtml() {
+    const timerState = new Date(localStorage.getItem(`Timer State For Room (${playstationRoomId})`)).getTime();
+    console.log(`timer state : ${timerState}`);
+    console.log(`current time : ${new Date().getTime()}`);
+
+    diffrenceTimeInMinutes = Math.round(((new Date().getTime() - timerState) / 60000));
+    console.log(`difrrence time : ${diffrenceTimeInMinutes}`);
+
+    if ((minute + diffrenceTimeInMinutes) < 59) {
+
+        minute += diffrenceTimeInMinutes;
+        timerSecond.innerHTML = `${second}`;
+        timerMinute.innerHTML = `${minute}`;
+        timerHour.innerHTML = `${hour}`;
+
+        timerIntervalId = setInterval(timer, 1000);
+    }
+    else {
+        console.log(`difrrence time : ${diffrenceTimeInMinutes}`);
+        hour += Math.round((minute + diffrenceTimeInMinutes) / 60);
+        console.log(`minute : ${minute}`);
+        minute = (minute + diffrenceTimeInMinutes) % 60;
+
+        timerSecond.innerHTML = `${second}`;
+        timerMinute.innerHTML = `${minute}`;
+        timerHour.innerHTML = `${hour}`;
+
+        timerIntervalId = setInterval(timer, 1000);
+    }
+}
+
 var startBtn = document.getElementById("startBtn");
 var stopBtn = document.getElementById("stopBtn");
 var roomStatus = document.getElementById("room-status");
@@ -87,29 +119,40 @@ var timerSecond = document.getElementById("second");
 var playstationRoomId = window.location.pathname.split('/')[3];
 console.log(`URL : ${window.location.pathname.split('/')[3]}`);
 
+
+
 var timerIntervalId;
 if (roomStatusVariable !== null) {
 
-    if (localStorage.getItem(`Time Radio For Room (${playstationRoomId})`) == "specific") {
+    hour = localStorage.getItem(`Timer State Hour For Room (${playstationRoomId})`);
+    minute = parseInt(localStorage.getItem(`Timer State Minute For Room (${playstationRoomId})`));
+    second = localStorage.getItem(`Timer State Second For Room (${playstationRoomId})`);
+
+    if (localStorage.getItem(`Time Radio For Room (${playstationRoomId})`) == "specific")
+    {
         console.log(specificTimeRadio);
         specificTimeRadio.checked = true;
+        openTimeRadio.disabled = true;
         handleSpecificTimeRadioClick();
 
         console.log("specific should clicked");
         // get the object of specific time inputs hours and minutes
         var specificTimeHoursAndMinutes = JSON.parse(localStorage.getItem(`Specific Time For Room (${playstationRoomId})`));
         //check if specific time is already completed
-        if (specificTimeHoursAndMinutes.hour > hour || (specificTimeHoursAndMinutes.hour == hour && specificTimeHoursAndMinutes.minute > minute)) {
+        if (hour > specificTimeHoursAndMinutes.hour || (hour == specificTimeHoursAndMinutes.hour && (minute == specificTimeHoursAndMinutes.minute || minute > specificTimeHoursAndMinutes.minute))) {
             hour = specificTimeHoursAndMinutes.hour;
             console.log(hour);
             minute = specificTimeHoursAndMinutes.minute;
             console.log(minute);
 
-            timerSecond.innerHTML = `00`;
+            timerSecond.innerHTML = `000`;
             timerMinute.innerHTML = `${minute}`;
             timerHour.innerHTML = `${hour}`;
+            //click the stop button to calculate invoice price
             timerIntervalId = setInterval(timer, 1000);
 
+        } else {
+            updateTimerInnerHtml();
         }
       
         specificTimeHourInput.value = specificTimeHoursAndMinutes.hour;
@@ -117,46 +160,8 @@ if (roomStatusVariable !== null) {
     }
     else
     {
-        const timerState = new Date(localStorage.getItem(`Timer State For Room (${playstationRoomId})`)).getTime();
-        console.log(`timer state : ${timerState}`);
-        console.log(`current time : ${new Date().getTime()}`);
-
-        diffrenceTimeInMinutes = Math.round(((new Date().getTime() - timerState) / 60000));
-        console.log(`difrrence time : ${diffrenceTimeInMinutes}`);
-
-        //var diffrenceTimeInMilisecond = Math.round(((new Date().getTime() - timerState)));
-        //var sumOfspecificTimeInMilisecond = ((parent(specificTimeHourInput.value) * 60) + parent(specificTimeMinuteInput.value)) / 60000;
-        hour = localStorage.getItem(`Timer State Hour For Room (${playstationRoomId})`);
-        minute = parseInt(localStorage.getItem(`Timer State Minute For Room (${playstationRoomId})`));
-        second = localStorage.getItem(`Timer State Second For Room (${playstationRoomId})`);
-
-        if ((minute + diffrenceTimeInMinutes) < 59) {
-
-            minute += diffrenceTimeInMinutes;
-            timerSecond.innerHTML = `${second}`;
-            timerMinute.innerHTML = `${minute}`;
-            timerHour.innerHTML = `${hour}`;
-
-            timerIntervalId = setInterval(timer, 1000);
-            //setTimeout(function () {
-            //    stopBtn.click();
-            //}, sumOfspecificTimeInMilisecond - diffrenceTimeInMilisecind);
-        }
-        else {
-            console.log(`difrrence time : ${diffrenceTimeInMinutes}`);
-            hour += Math.round((minute + diffrenceTimeInMinutes) / 60);
-            console.log(`minute : ${minute}`);
-            minute = (minute + diffrenceTimeInMinutes) % 60;
-
-            timerSecond.innerHTML = `${second}`;
-            timerMinute.innerHTML = `${minute}`;
-            timerHour.innerHTML = `${hour}`;
-
-            timerIntervalId = setInterval(timer, 1000);
-            //setTimeout(function () {
-            //    stopBtn.click();
-            //}, 60000 );
-        }
+        updateTimerInnerHtml();
+        
     }
 
     roomStatus.innerHTML = "Busy";
@@ -247,13 +252,14 @@ var timeDiffInHours;
 var timeDiffInMinutes;
 var stopTime
 var playstationRoomTotalPrice;
-stopBtn.addEventListener("click", () => {
 
+
+function handleStopBtnClick() {
     clearInterval(timerIntervalId);
     startBtn.disabled = true;
     stopBtn.disabled = true;
 
-  
+
     if (localStorage.getItem(`Time Radio For Room (${playstationRoomId})`) == "specific") {
         timeDiffInHours = parseInt(specificTimeHourInput.value);
         timeDiffInMinutes = parseInt(specificTimeMinuteInput.value);
@@ -277,12 +283,13 @@ stopBtn.addEventListener("click", () => {
         timeDiffInHours = Math.floor(timeDiff / (1000 * 60 * 60));
         timeDiffInMinutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
     }
- 
+
     playstationRoomTotalPrice = singlePlayerRadio.checked ? Math.round(((timeDiffInMinutes / 60) + timeDiffInHours) * singlePriceForHour)
         : Math.round(((timeDiffInMinutes / 60) + timeDiffInHours) * multiPriceForHour);
 
     diffrenceH1.innerHTML = timeDiff;
-});
+}
+stopBtn.addEventListener("click", handleStopBtnClick);
 
 
 //Display Items In Stock

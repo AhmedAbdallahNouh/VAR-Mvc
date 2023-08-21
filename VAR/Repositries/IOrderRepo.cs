@@ -10,6 +10,7 @@ namespace VAR.Repositries
         Task<Order?> edit(Order order);
         Task<List<Order>> getAll();
         PaginationVM getOrdersPagination(int page, int size);
+        PaginationVM GetFilteredOrdersPagination(FilteredOrdersPaginationVM filteredOrdersPaginationVM);
         Task<Order?> getById(int id);
     }
 }

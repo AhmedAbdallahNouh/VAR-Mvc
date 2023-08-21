@@ -24,9 +24,51 @@ namespace VAR.Repositries
             var pages = (int)Math.Ceiling((decimal)total / size);
 
             var result = (dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation).Include(o => o.OrderItemDetails )).Skip((page - 1) * size).Take(size).ToList();
-            PaginationVM paginationVM = new PaginationVM(total, pages, result);
+            PaginationVM paginationVM = new PaginationVM(total, pages, 0 , result);
             return paginationVM;
         }
+        public PaginationVM GetFilteredOrdersPagination(FilteredOrdersPaginationVM filteredOrdersPaginationVM)
+        {
+            var query = dbContext.Orders
+                .Include(o => o.Admin)
+                .Include(o => o.Playstation)
+                .Include(o => o.OrderItemDetails)
+                .Where(o =>
+                         (string.IsNullOrEmpty(filteredOrdersPaginationVM.AdminName) || o.Admin.Name == filteredOrdersPaginationVM.AdminName) &&
+                         (string.IsNullOrEmpty(filteredOrdersPaginationVM.PlaystationRoomName) || o.Playstation.RoomName == filteredOrdersPaginationVM.PlaystationRoomName) &&
+                         (!filteredOrdersPaginationVM.StartTime.HasValue || o.StartTime >= filteredOrdersPaginationVM.StartTime) &&
+                         (!filteredOrdersPaginationVM.EndTime.HasValue || o.EndTime <= filteredOrdersPaginationVM.EndTime)
+
+
+                       ).ToList();
+
+
+            //.Where(o =>
+            //        (!string.IsNullOrEmpty(filteredOrdersPaginationVM.AdminName) || o.Admin.Name == filteredOrdersPaginationVM.AdminName) &&
+            //        (!string.IsNullOrEmpty(filteredOrdersPaginationVM.PlaystationRoomName) || o.Playstation.RoomName == filteredOrdersPaginationVM.PlaystationRoomName) &&
+            //        (!filteredOrdersPaginationVM.StartTime.HasValue || o.StartTime >= filteredOrdersPaginationVM.StartTime) &&
+            //        (!filteredOrdersPaginationVM.EndTime.HasValue || o.EndTime <= filteredOrdersPaginationVM.EndTime)
+            //    ).ToList();
+
+            var total = query.Count();
+            var pages = (int)Math.Ceiling((decimal)total / filteredOrdersPaginationVM.size);
+
+            var result = query.Skip((filteredOrdersPaginationVM.page - 1) * filteredOrdersPaginationVM.size).Take(filteredOrdersPaginationVM.size).ToList();
+            var allOrdersTotalPrice = query.Sum(o => o.TotalPrice);
+
+            var paginationVM = new PaginationVM(total, pages, allOrdersTotalPrice, result);
+            return paginationVM;
+        }
+        //public PaginationVM getFilteredOrdersPagination(string adminName, int page, int size)
+        //{
+        //    var total = dbContext.Orders.Count();
+        //    var pages = (int)Math.Ceiling((decimal)total / size);
+
+        //    var result = (dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation).Include(o => o.OrderItemDetails)).Where(o => o.Admin.Name == adminName).Skip((page - 1) * size).Take(size).ToList();
+        //    PaginationVM paginationVM = new PaginationVM(total, pages, result);
+        //    return paginationVM;
+        //}
+
         public async Task<Order?> getById(int id)
         {
             return await dbContext.Orders.Include(o => o.Admin).Include(o => o.Playstation).Include(o => o.OrderItemDetails).ThenInclude(oid => oid.Item).SingleOrDefaultAsync(o => o.Id == id);

@@ -7,7 +7,7 @@
 
 @model Playstation
 
-<form asp-action="getAllRoomsForAdmin" asp-controller="PlaystationRoom" method="post">
+<form asp-action="AddPlaystationRoom" asp-controller="PlaystationRoom" method="post">
     <label asp-for="RoomName"></label>
     <input asp-for="RoomName" />
 
@@ -22,3 +22,14 @@
 
     <button id="submit-plaustation-room" type="submit">Add</button>
 </form>
+
+@section Scripts{
+    @*<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="/js/ReservePlaystationRoom.js"></script>
+    <script src="/js/Item.js"></script>*@
+    <script src="/AdminDashboard/js/playstationRoomAdminDashboard.js"></script>
+
+
+}
