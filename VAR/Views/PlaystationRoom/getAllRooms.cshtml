@@ -11,13 +11,12 @@
 <section class="page-section bg-light" id="portfolio">
     <div class="container">
         <div class="text-center">
-            <h2 class="section-heading text-uppercase">Portfolio</h2>
-            <h3 class="section-subheading text-muted">Lorem ipsum dolor sit amet consectetur.</h3>
+            <h2 class="section-heading text-uppercase">Playstation Rooms</h2>
         </div>
         <div class="row">
             @foreach(var item in Model)
             {
-                <div class="col-lg-4 col-sm-6 mb-4">
+                <div class="col-lg-3 col-sm-6 mb-4">
                     <!-- Portfolio item -->
                     <div class="portfolio-item">
                         <a class="portfolio-link" asp-action="getRoomById" asp-controller="PlaystationRoom" asp-route-id=@item.Id target="_blank">
@@ -46,9 +45,9 @@
                                     break;
                             }
                         </a>
-                    <div class="portfolio-caption">
-                        <div class="portfolio-caption-heading">@item.RoomName</div>
-                        <div class="portfolio-caption-subheading text-muted">Illustration</div>
+                    <div class="portfolio-caption"> 
+                        <div class="portfolio-caption-heading" style=" font-size: 1.2rem;color: #cca000;" >@item.RoomName</div>
+                        @*colr #cca000*@
                     </div>
                 </div>
             </div>

@@ -9,6 +9,7 @@ namespace VAR.Models
 
         [DataType(DataType.Date)]
         public DateTime? StartTime { get; set; }
+
         [DataType(DataType.Date)]
         public DateTime? EndTime { get; set; }
         public double TotalPrice { get; set; }

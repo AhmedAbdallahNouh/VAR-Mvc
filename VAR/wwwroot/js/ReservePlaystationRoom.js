@@ -16,6 +16,18 @@ var startAndStopBtnsDiv = document.getElementById("start-and-stop-div");
 
 console.log(roomStatusVariable);
 
+function deleteLocalStorageForThisRoomAfetrOrderConfirming() {
+    localStorage.removeItem(`Timer State For Room (${playstationRoomId})`);
+    localStorage.removeItem(`Timer State Hour For Room (${playstationRoomId})`);
+    localStorage.removeItem(`Timer State Minute For Room (${playstationRoomId})`);
+    localStorage.removeItem(`Timer State Second For Room (${playstationRoomId})`);
+    localStorage.removeItem(`Time Radio For Room (${playstationRoomId})`);
+    localStorage.removeItem(`Specific Time For Room (${playstationRoomId})`);
+    localStorage.removeItem(`start time for room (${playstationRoomId})`);
+    localStorage.removeItem(`arrayOfItemsIDsForRoom(${playstationRoomId})`);
+    localStorage.removeItem(`oredrItemsForRoom(${playstationRoomId})`);
+    localStorage.removeItem(`arrayOfItemsNameAndItemsIdForRoom(${playstationRoomId})`)
+}
 var second = 0;
 var minute = 0;
 var hour = 0;
@@ -168,11 +180,15 @@ if (roomStatusVariable !== null) {
     startBtn.disabled = true;
 
 }
-else {
+else if (!playstationRoomId) {
+    console.log("Just Items");
+} else {
     roomStatus.innerHTML = "Free";
+
 }
 
-console.log(`room status : ${roomStatus.innerHTML}`);
+
+//console.log(`room status : ${roomStatus.innerHTML}`);
 
 
 
@@ -320,49 +336,66 @@ $("#order-btn").click(function () {
 });
 
 var orderTable = document.getElementById("order-table");
+var modalBody = document.getElementById("modal-body");
 var modalFooter = document.querySelector(".modal-footer");
 var orderTotalPriceValue;
 var AllItemsTotalPrice = 0;
 
 function showOrder() {
-
+    var existingPsRoomTable ;
+    var existingOrderTable ;
+    console.log(modalBody);
     console.log(plastationRoomTableCopy);
     var plastationRoomTable = document.getElementById("ps-room-table");
-    var plastationRoomTableCopy = plastationRoomTable.cloneNode(true);
-    console.log(plastationRoomTableCopy);
-    if (singlePlayerRadio.checked) {
-        plastationRoomTableCopy.rows[0].cells[3].remove();
-        plastationRoomTableCopy.rows[1].cells[3].remove();
+    //check if that is playstation gaming order or just items order
+    //if its playstation gaming ->
+    if (plastationRoomTable) {
+        var plastationRoomTableCopy = plastationRoomTable.cloneNode(true);
+        if (singlePlayerRadio.checked) {
+            plastationRoomTableCopy.rows[0].cells[3].remove();
+            plastationRoomTableCopy.rows[1].cells[3].remove();
+
+        } else {
+            plastationRoomTableCopy.rows[0].cells[2].remove()
+            plastationRoomTableCopy.rows[1].cells[2].remove()
+        }
+
+        var row = document.querySelectorAll("tr");
+        console.log("row", row[0]);
+
+        //check if the table head (time and totalPrice) is not exist already
+        if (row[0].cells[4] == null) {
+            var timeCellHeader = document.createElement("th");
+            timeCellHeader.textContent = "Time";
+            //row[0].appendChild(timeCellHeader);
+            plastationRoomTableCopy.rows[0].appendChild(timeCellHeader);
+
+            var timeCellValue = row[1].insertCell();
+            timeCellValue.textContent = `${timeDiffInHours} : ${timeDiffInMinutes}`
+            console.log(diffrence);
+            plastationRoomTableCopy.rows[1].appendChild(timeCellValue);
+
+            var totalPriceCellHeader = document.createElement("th");
+            totalPriceCellHeader.textContent = "Total Price";
+            plastationRoomTableCopy.rows[0].appendChild(totalPriceCellHeader);
+
+            var totalPriceCellValue = row[1].insertCell();
+            totalPriceCellValue.textContent = playstationRoomTotalPrice.toString();
+            console.log(diffrence);
+            plastationRoomTableCopy.rows[1].appendChild(totalPriceCellValue);
+            console.log(plastationRoomTableCopy);
+        }
+
+        // Check if PlaystationRoomTable Is Already Exist In ModalBody
+        existingPsRoomTable = (modalBody.querySelectorAll("table"))[0];
+        existingOrderTable = (modalBody.querySelectorAll("table"))[1];
 
     } else {
-        plastationRoomTableCopy.rows[0].cells[2].remove()
-        plastationRoomTableCopy.rows[1].cells[2].remove()
-    }
-
-    var row = document.querySelectorAll("tr");
-    console.log("row", row[0]);
-
-    //check if the table head (time and totalPrice) is not exist already
-    if (row[0].cells[4] == null) {
-        var timeCellHeader = document.createElement("th");
-        timeCellHeader.textContent = "Time";
-        //row[0].appendChild(timeCellHeader);
-        plastationRoomTableCopy.rows[0].appendChild(timeCellHeader);
-
-        var timeCellValue = row[1].insertCell();
-        timeCellValue.textContent = `${timeDiffInHours} : ${timeDiffInMinutes}`
-        console.log(diffrence);
-        plastationRoomTableCopy.rows[1].appendChild(timeCellValue);
-
-        var totalPriceCellHeader = document.createElement("th");
-        totalPriceCellHeader.textContent = "Total Price";
-        plastationRoomTableCopy.rows[0].appendChild(totalPriceCellHeader);
-
-        var totalPriceCellValue = row[1].insertCell();
-        totalPriceCellValue.textContent = playstationRoomTotalPrice.toString();
-        console.log(diffrence);
-        plastationRoomTableCopy.rows[1].appendChild(totalPriceCellValue);
-    }
+        // It Is Just Items Odere
+         existingOrderTable = (modalBody.querySelectorAll("table"))[0];
+    } 
+    console.log("playstation table : ", plastationRoomTableCopy);
+    
 
     orderTable = document.getElementById("order-table");
     //var orderTableCopy = orderTable !== null ? orderTable.cloneNode(true) : null;
@@ -402,7 +435,6 @@ function showOrder() {
     {
         var orderTableCopy = null;
     }
-    var modalBody = document.getElementById("modal-body");
     // Create Order Total Price (Items Total Price + Playstation Gaming Total Price)
     var orderTotalPriceDiv = document.createElement("div");
     orderTotalPriceDiv.classList.add("me-auto", "p-2");
@@ -410,17 +442,17 @@ function showOrder() {
 
     orderTotalPriceValue =  playstationRoomTotalPrice + AllItemsTotalPrice;
 
-    orderTotalPriceValue = playstationRoomTotalPrice + AllItemsTotalPrice;
+    //orderTotalPriceValue = playstationRoomTotalPrice + AllItemsTotalPrice;
     orderTotalPriceDiv.innerText = `Order Total Price : ${orderTotalPriceValue.toString()} L.E`;
 
     // Check if the div already contains a table element
-    var existingPsRoomTable = (modalBody.querySelectorAll("table"))[0];
-    var existingOrderTable = (modalBody.querySelectorAll("table"))[1];
+    //var existingPsRoomTable = (modalBody.querySelectorAll("table"))[0];
+    //var existingOrderTable = (modalBody.querySelectorAll("table"))[1];
 
     console.log(existingPsRoomTable);
     console.log(existingOrderTable);
 
-    if (existingPsRoomTable == null) modalBody.appendChild(plastationRoomTableCopy);
+    if (existingPsRoomTable == null && plastationRoomTable) modalBody.appendChild(plastationRoomTableCopy);
 
     if (orderTableCopy != null) {
         if (existingOrderTable != null) {
@@ -470,26 +502,31 @@ var tableBody;
 async function confirmOrder()
 {
     console.log(adminId);
-    if (playstationRoomId === undefined) playstationRoomId = null
-    var TotalPriceOfAllOrderedItems = playstationRoomTotalPrice;
+    if (playstationRoomId === undefined) {
+        playstationRoomId = null;
+        var TotalPriceOfAllOrderedItems = playstationRoomTotalPrice;
+    } else {
+        var TotalPriceOfAllOrderedItems = 0;
+    } 
     //check if there items order to get the total price of all items to add it to total price of playstation gamin order 
     if (orderTable !== null) {
         tableBody = document.getElementById("table-body");
         for (i = 0; i < tableBody.rows.length; i++) {
             console.log(tableBody.rows[i].cells[4].innerText)
             TotalPriceOfAllOrderedItems += parseFloat(tableBody.rows[i].cells[4].innerText);
-        }
+        }   
 
         if (discount.value != "") TotalPriceOfAllOrderedItems -= parseFloat(discount.value) 
     }
     var orderToAdd = {
 
-        StartTime: startTime ? `${startTime.toLocaleDateString('en-US')} ${startTime.toLocaleTimeString('en-US').substring(0, 10)}` : null,
-        EndTime: stopTime ? `${stopTime.toLocaleDateString('en-US')} ${stopTime.toLocaleTimeString('en-US').substring(0, 10)}` : null,
+        StartTime: startTime ? `${startTime.toLocaleDateString('en-US')} ${startTime.toLocaleTimeString('en-US').substring(0, 11)}` : null,
+        EndTime: stopTime ? `${stopTime.toLocaleDateString('en-US')} ${stopTime.toLocaleTimeString('en-US').substring(0, 11)}` : null,
         TotalPrice: orderTotalPriceValueAfterDiscount,
         Discount : parseFloat(discount.value),
         adminID: adminId,
-        playstationID: parseInt(playstationRoomId)
+        // check if this is just items order by checking the startTime Value
+        playstationID: startTime ? parseInt(playstationRoomId) : null 
     };
 
     var result;
@@ -509,7 +546,7 @@ async function confirmOrder()
 
         if (response.ok) {
             result = await response.json();
-            window.location.href = "http://localhost:32719/PlaystationRoom/getallrooms";
+            //window.location.href = "http://localhost:32719/PlaystationRoom/getallrooms";
             console.log(result);
         } else {
             throw new Error(`HTTP Error: ${response.status}`);
@@ -522,8 +559,9 @@ async function confirmOrder()
 
     if (orderTable !== null)
     {
-        
-        for (let i = 0; i < arrayOfItemsIDs.length; i++) 
+        console.log(arrayOfItemsIDs)
+        //if (localStorage.getItem(`arrayOfItemsNameAndItemsIdForRoom(${playstationRoomId})`)) arrayOfItemsNameAndItemsId = JSON.parse(localStorage.getItem("arrayOfItemsIDsForRoom(1)"));
+        for (let i = 0; i < arrayOfItemsNameAndItemsId.length; i++) 
         {
             var ItemQuantityCell = tableBody.rows[i].cells[3].textContent;
             var ItemTotalPriceCell = tableBody.rows[i].cells[4].textContent;
@@ -533,10 +571,13 @@ async function confirmOrder()
             console.log(ItemQuantityCell);
             console.log(ItemTotalPriceCell);
 
+            /* get the item id from arrayOfItemsNameAndItemsId by getting the value of each key 
+            of each object  in iarrayOfItemsNameAndItemsId */
+            var itemId = arrayOfItemsNameAndItemsId[i][tableBody.rows[i].cells[0].textContent];
             var orderItemDetailsToAdd = {
 
                 orderId: result.id,
-                itemId: arrayOfItemsIDs[i],
+                itemId: itemId,
                 Quantity: parseInt(ItemQuantityCell),
                 TotalPrice: parseInt(ItemTotalPriceCell)
             };
@@ -557,7 +598,6 @@ async function confirmOrder()
                 {
                     const result1 = await response1.json();
                     console.log(result1);
-                    window.location.href = "http://localhost:32719/PlaystationRoom/getallrooms";
     
                 } else {
                     throw new Error(`HTTP Error: ${response1.status}`);
@@ -566,7 +606,11 @@ async function confirmOrder()
             catch (error) {
                 console.error(error);
             }
+
         }
-       
+
     }
+    deleteLocalStorageForThisRoomAfetrOrderConfirming();
+    window.location.href = "http://localhost:5208/PlaystationRoom/getallrooms";
+
 }

@@ -24,18 +24,30 @@ $('table').on('click', '.delete-item', function () {
     var rowItemName = row.find('td:first').text();
     console.log(rowItemName)
     //Update tableData
-    let index = tableData.findIndex(item => item.name === rowItemName);
+    let tableDataDeletedObjectIndex = tableData.findIndex(item => item.name === rowItemName);
 
-    if (index !== -1) {
-        tableData.splice(index, 1);
+    if (tableDataDeletedObjectIndex !== -1) {
+        tableData.splice(tableDataDeletedObjectIndex, 1);
 
         // Save table data to local storage
         playstationRoomId != undefined
             ? localStorage.setItem(`oredrItemsForRoom(${playstationRoomId})`, JSON.stringify(tableData))
             : localStorage.setItem("justOrderItems", JSON.stringify(tableData));
     }
+
+    //Update arrayOfItemsNameAndItemsId by Removing Deleted Item Object From arrayOfItemsNameAndItemsId
+    let arrayOfItemsNameAndItemsIdDeletedObjectIndex = arrayOfItemsNameAndItemsId.findIndex(item => item.hasOwnProperty(rowItemName) == true);
+    if (arrayOfItemsNameAndItemsIdDeletedObjectIndex !== -1) {
+        arrayOfItemsNameAndItemsId.splice(arrayOfItemsNameAndItemsIdDeletedObjectIndex, 1);
+
+        // Save arrayOfItemsNameAndItemsId to local storage
+        localStorage.setItem(`arrayOfItemsNameAndItemsIdForRoom(${playstationRoomId})`, JSON.stringify(arrayOfItemsNameAndItemsId));
+
+    }
+
     // Delete closest row when "Delete" button is clicked
     row.remove();
+    
     // Check if table body has any rows left
     if (tableBody.rows.length == 0) {
         // If there are no more rows in the table body, delete the entire table
@@ -186,19 +198,35 @@ addItemBttn.addEventListener("click", () => {
 
 
 //array holds the IDs of Ordered Items to Save it in OrderItemDetails Table In DataBase 
-   var arrayOfItemsIDs = [];
-
+var arrayOfItemsIDs = localStorage.getItem(`arrayOfItemsIDsForRoom(${playstationRoomId})`) != null ? JSON.parse(localStorage.getItem(`arrayOfItemsIDsForRoom(${playstationRoomId})`)) :[];
+var arrayOfItemsNameAndItemsId = localStorage.getItem(`arrayOfItemsNameAndItemsIdForRoom(${playstationRoomId})`) != null ? JSON.parse(localStorage.getItem(`arrayOfItemsNameAndItemsIdForRoom(${playstationRoomId})`)) : [];
     addBttn.addEventListener("click", () => {
-
-        //Check if the id of selected is already exisit in arrayOfItemsIDs or not 
-        if (!arrayOfItemsIDs.includes(selectedItem.id))
+   
+        //Check if the ItemNameAndItemIdObj of selected is already exisit in arrayOfItemsNameAndItemsId or not
+        if (arrayOfItemsNameAndItemsId.length != 0) {
+            var ItemNameAndItemIdObjIsExists = arrayOfItemsNameAndItemsId.some(item => {
+                if (typeof (item) == "object"  ) return item.hasOwnProperty(selectedItem.name);
+               // Or use a specific property for comparison
+            });
+            if (!ItemNameAndItemIdObjIsExists) {
+                var ItemNameAndItemIdObj = {};
+                ItemNameAndItemIdObj[selectedItem.name] = selectedItem.id;
+                console.log(ItemNameAndItemIdObj);
+                arrayOfItemsNameAndItemsId.push(ItemNameAndItemIdObj);
+                // Save arrayOfItemsIDs to local storage
+                localStorage.setItem(`arrayOfItemsNameAndItemsIdForRoom(${playstationRoomId})`, JSON.stringify(arrayOfItemsNameAndItemsId));
+            } 
+        }
+        else
         {
-            arrayOfItemsIDs.push(selectedItem.id);
+            var ItemNameAndItemIdObj = {};
+            ItemNameAndItemIdObj[selectedItem.name] = selectedItem.id;
+            console.log(ItemNameAndItemIdObj);
+            arrayOfItemsNameAndItemsId.push(ItemNameAndItemIdObj);
             // Save arrayOfItemsIDs to local storage
-            localStorage.setItem('arrayOfItemsIDs', arrayOfItemsIDs);
-        } 
-        console.log(arrayOfItemsIDs);
- 
+            localStorage.setItem(`arrayOfItemsNameAndItemsIdForRoom(${playstationRoomId})`, JSON.stringify(arrayOfItemsNameAndItemsId));
+        }
+                       
         $.ajax({
             url: "/Item/itemCart",
             success: function (result) {

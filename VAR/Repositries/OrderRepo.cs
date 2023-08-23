@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
 using System.Globalization;
+using System.Threading;
+using Microsoft.EntityFrameworkCore;
+//using System.Globalization;
 using VAR.Models;
 using VAR.ViewModels;
 
@@ -29,6 +32,8 @@ namespace VAR.Repositries
         }
         public PaginationVM GetFilteredOrdersPagination(FilteredOrdersPaginationVM filteredOrdersPaginationVM)
         {
+            //var endDate = new DateTime(filteredOrdersPaginationVM.EndTime.Day) 
+            var endOfDayTime = new DateTime((int)(filteredOrdersPaginationVM.EndTime?.Year), (int)(filteredOrdersPaginationVM.EndTime?.Month), (int)(filteredOrdersPaginationVM.EndTime?.Day), 23, 59, 59);
             var query = dbContext.Orders
                 .Include(o => o.Admin)
                 .Include(o => o.Playstation)
@@ -36,19 +41,12 @@ namespace VAR.Repositries
                 .Where(o =>
                          (string.IsNullOrEmpty(filteredOrdersPaginationVM.AdminName) || o.Admin.Name == filteredOrdersPaginationVM.AdminName) &&
                          (string.IsNullOrEmpty(filteredOrdersPaginationVM.PlaystationRoomName) || o.Playstation.RoomName == filteredOrdersPaginationVM.PlaystationRoomName) &&
-                         (!filteredOrdersPaginationVM.StartTime.HasValue || o.StartTime >= filteredOrdersPaginationVM.StartTime) &&
-                         (!filteredOrdersPaginationVM.EndTime.HasValue || o.EndTime <= filteredOrdersPaginationVM.EndTime)
+                         (!filteredOrdersPaginationVM.StartTime.HasValue || (o.EndTime >= filteredOrdersPaginationVM.StartTime && o.EndTime <= endOfDayTime) )
+                        //&& (!filteredOrdersPaginationVM.EndTime.HasValue || o.EndTime <= filteredOrdersPaginationVM.EndTime)
 
 
                        ).ToList();
 
-
-            //.Where(o =>
-            //        (!string.IsNullOrEmpty(filteredOrdersPaginationVM.AdminName) || o.Admin.Name == filteredOrdersPaginationVM.AdminName) &&
-            //        (!string.IsNullOrEmpty(filteredOrdersPaginationVM.PlaystationRoomName) || o.Playstation.RoomName == filteredOrdersPaginationVM.PlaystationRoomName) &&
-            //        (!filteredOrdersPaginationVM.StartTime.HasValue || o.StartTime >= filteredOrdersPaginationVM.StartTime) &&
-            //        (!filteredOrdersPaginationVM.EndTime.HasValue || o.EndTime <= filteredOrdersPaginationVM.EndTime)
-            //    ).ToList();
 
             var total = query.Count();
             var pages = (int)Math.Ceiling((decimal)total / filteredOrdersPaginationVM.size);
@@ -77,7 +75,7 @@ namespace VAR.Repositries
         //{
         //    return await dbContext.Orders.SingleOrDefaultAsync(o => o.Number == number);
         //}
-        public async Task<Order?> Add(OrderVM orderVM)
+        public  Order? Add(OrderVM orderVM)
         {
 
             Order order = new Order()
@@ -90,7 +88,7 @@ namespace VAR.Repositries
                 playstationID = orderVM.playstationID
             };
 
-            await dbContext.Orders.AddAsync(order);
+            dbContext.Orders.Add(order);
             dbContext.SaveChanges();
             return order;
         }

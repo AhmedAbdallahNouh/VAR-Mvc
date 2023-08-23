@@ -54,6 +54,7 @@ namespace VAR.Controllers
         }
         public async Task<IActionResult> getFilteredOrdersPagination([FromQuery] FilteredOrdersPaginationVM filteredOrdersPaginationVM)
         {
+
             List<Playstation>? playstationRooms = await playstationRepo.getAll();
             ViewBag.playstationRooms = new SelectList(playstationRooms, "RoomName", "RoomName");
 
@@ -85,9 +86,10 @@ namespace VAR.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddOrderDB([FromBody] OrderVM orderToAdd)
+        public IActionResult AddOrderDB([FromBody] OrderVM orderToAdd)
         {
-            Order? order = await orderRepo.Add(orderToAdd);            
+            //if (orderToAdd.StartTime == null) orderToAdd.StartTime = DateTime.Now.ToString();
+            Order? order = orderRepo.Add(orderToAdd);            
             return Json(order);
             
         }

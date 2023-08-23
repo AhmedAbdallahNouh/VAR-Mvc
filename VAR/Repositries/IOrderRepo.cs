@@ -5,7 +5,7 @@ namespace VAR.Repositries
 {
     public interface IOrderRepo
     {
-        Task<Order?> Add(OrderVM orderVM);
+        Order? Add(OrderVM orderVM);
         Task<Order?> delete(int id);
         Task<Order?> edit(Order order);
         Task<List<Order>> getAll();
