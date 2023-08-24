@@ -1,4 +1,17 @@
 ﻿
+function deleteLocalStorageAfetrApplyFilter() {
+    localStorage.setItem("active List","1");
+}
+function deleteLocalStorageAfetrClearFilter() {
+    localStorage.removeItem("PageNumberForFilteredOrderes");
+    localStorage.removeItem("active List");
+    localStorage.removeItem("ApplyOrdersFilter");
+    localStorage.removeItem("adminNameForFilteredOrderes");
+    localStorage.removeItem("playstationRoomNameForFilteredOrderes");
+    localStorage.removeItem("dateFromForFilteredOrderes");
+    localStorage.removeItem("dateToForFilteredOrderes");
+}
+
 const noneExistingOrdersFilterAlert = document.getElementById("alert-div");
 //noneExistingOrdersFilterAlert[0].setAttribute("style", "display: none!important;");
 
@@ -116,7 +129,8 @@ var filteredDataByDay;
 var paginationVM;
 
 async function handleApplyFilterBtnClick() {
-   
+
+    deleteLocalStorageAfetrApplyFilter();
     var FilteredOrdersPaginationVM = {
         AdminName: AdminNameSelect.value,
         playstationRoomName: RoomNameSelect.value,
@@ -133,6 +147,7 @@ async function handleApplyFilterBtnClick() {
         data: JSON.stringify(FilteredOrdersPaginationVM),
         success: function (response) {
             localStorage.setItem("PageNumberForFilteredOrderes", pageNumberForFilteredOrdersPagination);
+            localStorage.setItem("active List", pageNumberForFilteredOrdersPagination);
             localStorage.setItem("ApplyOrdersFilter", "true");
             localStorage.setItem("adminNameForFilteredOrderes", AdminNameSelect.value);
             localStorage.setItem("playstationRoomNameForFilteredOrderes", RoomNameSelect.value);
@@ -197,10 +212,10 @@ claerFilterBtn.addEventListener("click", function () {
     dateToInput.value = '';    
     RoomNameSelect.value = "";   
     AdminNameSelect.value = "";
-    localStorage.removeItem("PageNumberForFilteredOrderes");
-    localStorage.removeItem("ApplyOrdersFilter");
-    localStorage.removeItem("adminNameForFilteredOrderes");
-    window.location.href =`http://localhost:32719/Order/getOrdersPagination/?page=${1}&size=10`;
+    deleteLocalStorageAfetrClearFilter();
+    //window.location.href = `http://localhost:32719/Order/getOrdersPagination/?page=${1}&size=10`;
+    window.location.href = `http://localhost:5208/Order/getOrdersPagination/?page=${1}&size=10`;
+
 });
 
 // get all orders by click the current active list from pagination list
@@ -328,7 +343,8 @@ pageLinks.forEach(function (pageLink) {
             ApplyFilterBtn.click();
             //window.location.href = `http://localhost:32719/Order/getFilteredOrdersPagination/?adminName=${AdminNameSelect.value}&page=${pageNumber}&size=10`;
         } else {
-            window.location.href = `http://localhost:32719/Order/getOrdersPagination/?page=${pageNumber}&size=10`;
+            window.location.href = `http://localhost:5208/Order/getOrdersPagination/?page=${pageNumber}&size=10`;
+            //window.location.href = `http://localhost:32719/Order/getOrdersPagination/?page=${pageNumber}&size=10`;
 
         }
         //window.location.href = `http://localhost:5208/Order/getOrdersPagination/?page=${pageNumber}&size=10`;

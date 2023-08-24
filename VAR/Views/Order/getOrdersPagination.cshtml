@@ -9,59 +9,39 @@
 @model PaginationVM
 
 
-<button id="all-orders" class="btn btn-secondary" >All Orders</button>
-<div class="row">
-    <label for="date-from" class="col-1 col-form-label">From</label>
-    <div class="col-5">
-        <input type="date" class="form-control" id="date-from"/>      
+<button id="all-orders" class="btn btn-secondary mb-3" >All Orders</button>
+<div class="row  mb-3">
+    <div class="col-5 d-flex">
+        <label for="date-from" class="" style="padding-right: 7px;padding-top: 8px;">From</label>
+        <input type="date" class="form-control" id="date-from" />
     </div>
-</div>
-
-<div class="row">
-    <label for="date-to" class="col-1 col-form-label">To</label>
-    <div class="col-5">
+ 
+    <div class="col-5 d-flex">
+        <label for="date-to" class="" style="padding-right: 7px;padding-top: 8px;">To</label>
         <input type="date" class="form-control" id="date-to"/>      
     </div>
 </div>
 
-
-
-<div class="row">
-    <label for="select-room" class="col-1 col-form-label">Select Room</label>
-    <div class="col-5">
+<div class="row  mb-3">
+    <div class="col-5 d-flex">
+        <label for="select-room" class="" style="padding-right: 5px; margin-top: 6px;">Room</label>
         <select id="select-room" asp-items="ViewBag.playstationRooms" class="form-control">
         <option value="">Choose One</option>
         </select>
     </div>
-</div>
-
-<div class="row">
-    <label for="select-admin" class="col-1 col-form-label">Select Room</label>
-    <div class="col-5">
+    <div class="col-5 d-flex">
+        <label for="select-admin" class="" style="padding-right: 5px; margin-top: 6px;">Admin</label>
         <select id="select-admin" asp-items="ViewBag.admins" class="form-control">
             <option value="">Choose One</option>
         </select>
     </div>
 </div>
 
-@*<div class="row">
-    <label for="room-name" class="col-1 col-form-label">Room</label>
-    <div class="col-5">
-        <input type="text" class="form-control" id="room-name"/> 
-        <input type="text" class="form-control" id="room-name"/> 
-
-    </div>
+<div class="row  mb-3">
+    <button id="clear-filter" class="btn btn-secondary" style="margin-left: 58px;">Clear Filters</button>
+    <button id="filter-by-date" class="btn btn-secondary" style="margin-left: 12px;">Apply Filters</button>
 </div>
 
-<div class="row">
-<label for="admin-name" class="col-1 col-form-label">Admin</label>
-<div class="col-5">
-        <input type="text" class="form-control" id="admin-name" />
-</div>
-</div>*@
-
-<button id="clear-filter" class="btn btn-secondary">Clear Filters</button>
-<button id="filter-by-date" class="btn btn-secondary">Apply Filters</button>
 
 <div id="alert-div" class="alert alert-danger d-flex align-items-center" role="alert" style="display: none!important;">
     <svg class="bi flex-shrink-0 me-2" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill" /></svg>
@@ -70,7 +50,7 @@
     </div>
 </div>
 
-<table id="orders-table">
+<table class="table table-secondary text-center" style="color: black;" id="orders-table">
     <thead>
         <tr>
             <th>StartTime</th>
@@ -119,11 +99,11 @@
                     <td>ـــــ</td>
                 }
 
-                @if (item.StartTime != null && item.OrderItemDetails.Count == 0)
+                @if (item.playstationID != null && item.OrderItemDetails.Count == 0)
                 {
                     <td>Just Gaming</td>
                 }
-                else if (item.StartTime != null && item.OrderItemDetails.Count != 0)
+                else if (item.playstationID != null && item.OrderItemDetails.Count != 0)
                 {
                     <td>Gamin And Items</td>
                 }
@@ -134,12 +114,7 @@
 
                 <td>@item.TotalPrice</td>
 
-                <td><a class="btn btn-warning" asp-action="getOrderById" asp-controller="Order" asp-route-id="@item.Id">Details</a></td>
-               @* <td>
-                    <button type="button" class="order-btn btn  btn-danger" data-bs-toggle="modal" data-bs-target="#staticBackdrop" data-rowid="@item.Id">
-                    Delete
-                    </button>
-                </td>*@
+                <td><a class="btn btn-warning" asp-action="getOrderById" asp-controller="Order" asp-route-id="@item.Id">Details</a></td>        
 
             </tr>
         }
@@ -148,7 +123,7 @@
 
 <div class="row">
     <div class="col-sm-12 col-md-7">
-      All Orders Total Price = @Model.AllOrdersTotalPrice
+      All Orders Total Price = @Model.AllOrdersTotalPrice 
     </div>
 </div>
 

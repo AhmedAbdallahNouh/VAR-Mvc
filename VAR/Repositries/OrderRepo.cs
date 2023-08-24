@@ -41,9 +41,8 @@ namespace VAR.Repositries
                 .Where(o =>
                          (string.IsNullOrEmpty(filteredOrdersPaginationVM.AdminName) || o.Admin.Name == filteredOrdersPaginationVM.AdminName) &&
                          (string.IsNullOrEmpty(filteredOrdersPaginationVM.PlaystationRoomName) || o.Playstation.RoomName == filteredOrdersPaginationVM.PlaystationRoomName) &&
-                         (!filteredOrdersPaginationVM.StartTime.HasValue || (o.EndTime >= filteredOrdersPaginationVM.StartTime && o.EndTime <= endOfDayTime) )
+                         (!filteredOrdersPaginationVM.StartTime.HasValue || (o.StartTime >= filteredOrdersPaginationVM.StartTime && o.StartTime <= endOfDayTime) )
                         //&& (!filteredOrdersPaginationVM.EndTime.HasValue || o.EndTime <= filteredOrdersPaginationVM.EndTime)
-
 
                        ).ToList();
 
