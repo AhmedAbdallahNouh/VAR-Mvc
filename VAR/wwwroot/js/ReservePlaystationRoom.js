@@ -14,7 +14,53 @@ var specificTimeHourInput = document.getElementById("specific-time-hour");
 var specificTimeMinuteInput = document.getElementById("specific-time-minutes");
 var startAndStopBtnsDiv = document.getElementById("start-and-stop-div");
 
+var singlePlayerRadio = document.getElementById("singleRadio");
+var MultiPlayerRadio = document.getElementById("MultiRadio");
+var stopBtn = document.getElementById("stopBtn");
+var playstationRoomTableBody = document.getElementById("playstation-room-tbody");
+
+//get the single and multi price per hour of playstation room
+var singlePriceForHour = parseInt(playstationRoomTableBody.rows[0].cells[2].innerText);
+var multiPriceForHour = parseInt(playstationRoomTableBody.rows[0].cells[3].innerText);
+
 console.log(roomStatusVariable);
+
+function handleStopBtnClick() {
+    clearInterval(timerIntervalId);
+    startBtn.disabled = true;
+    stopBtn.disabled = true;
+
+    if (localStorage.getItem(`Time Radio For Room (${playstationRoomId})`) == "specific") {
+        timeDiffInHours = parseInt(specificTimeHourInput.value);
+        timeDiffInMinutes = parseInt(specificTimeMinuteInput.value);
+    }
+    else {
+        var time1 = new Date("Sat Aug 12 2023 17:00:41 GMT+0300");
+        var time2 = new Date("Sat Aug 12 2023 18:45:41 GMT+0300");
+
+        if (localStorage.getItem(`start time for room (${playstationRoomId})`) !== null) {
+            startTime = new Date(localStorage.getItem(`start time for room (${playstationRoomId})`));
+            console.log(`startTime FROM IF : ${startTime}`);
+
+        }
+        // Calculate the time difference in milliseconds
+        //stopTime = new Date();
+
+        stopTime = localStorage.getItem(`stop time for room (${playstationRoomId})`) ? new Date(localStorage.getItem(`stop time for room (${playstationRoomId})`)) : new Date();
+        localStorage.setItem(`stop time for room (${playstationRoomId})`, stopTime);
+        var timeDiff = Math.abs(stopTime - startTime);
+        //timeDiff = Math.abs(time2 - time1);
+        localStorage.setItem(`stop time for room (${playstationRoomId})`, stopTime);
+
+        // Convert milliseconds to hours and minutes
+        timeDiffInHours = Math.floor(timeDiff / (1000 * 60 * 60));
+        timeDiffInMinutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+    }
+
+    playstationRoomTotalPrice = singlePlayerRadio.checked ? Math.round(((timeDiffInMinutes / 60) + timeDiffInHours) * singlePriceForHour)
+        : Math.round(((timeDiffInMinutes / 60) + timeDiffInHours) * multiPriceForHour);
+
+}
 
 function deleteLocalStorageForThisRoomAfetrOrderConfirming() {
     localStorage.removeItem(`Timer State For Room (${playstationRoomId})`);
@@ -120,10 +166,6 @@ var stopBtn = document.getElementById("stopBtn");
 var roomStatus = document.getElementById("room-status");
 var timerDiv = document.getElementById("timer");
 
-var startTimeH1 = document.getElementById("startTime");
-var stopTimeH1 = document.getElementById("stopTime");
-var diffrenceH1 = document.getElementById("diffrence");
-
 var timerHour = document.getElementById("hour");
 var timerMinute = document.getElementById("minute");
 var timerSecond = document.getElementById("second");
@@ -135,49 +177,57 @@ console.log(`URL : ${window.location.pathname.split('/')[3]}`);
 
 var timerIntervalId;
 if (roomStatusVariable !== null) {
-
     hour = localStorage.getItem(`Timer State Hour For Room (${playstationRoomId})`);
     minute = parseInt(localStorage.getItem(`Timer State Minute For Room (${playstationRoomId})`));
     second = localStorage.getItem(`Timer State Second For Room (${playstationRoomId})`);
 
-    if (localStorage.getItem(`Time Radio For Room (${playstationRoomId})`) == "specific")
-    {
-        console.log(specificTimeRadio);
-        specificTimeRadio.checked = true;
-        openTimeRadio.disabled = true;
-        handleSpecificTimeRadioClick();
+    if (localStorage.getItem(`stop time for room (${playstationRoomId})`) != null) {
+        timerSecond.innerHTML = second;
+        timerMinute.innerHTML = minute;
+        timerHour.innerHTML = hour;
+        handleStopBtnClick();
+    }
+    else {
+        if (localStorage.getItem(`Time Radio For Room (${playstationRoomId})`) == "specific") {
+            console.log(specificTimeRadio);
+            specificTimeRadio.checked = true;
+            openTimeRadio.disabled = true;
+            handleSpecificTimeRadioClick();
 
-        console.log("specific should clicked");
-        // get the object of specific time inputs hours and minutes
-        var specificTimeHoursAndMinutes = JSON.parse(localStorage.getItem(`Specific Time For Room (${playstationRoomId})`));
-        //check if specific time is already completed
-        if (hour > specificTimeHoursAndMinutes.hour || (hour == specificTimeHoursAndMinutes.hour && (minute == specificTimeHoursAndMinutes.minute || minute > specificTimeHoursAndMinutes.minute))) {
-            hour = specificTimeHoursAndMinutes.hour;
-            console.log(hour);
-            minute = specificTimeHoursAndMinutes.minute;
-            console.log(minute);
+            console.log("specific should clicked");
+            // get the object of specific time inputs hours and minutes
+            var specificTimeHoursAndMinutes = JSON.parse(localStorage.getItem(`Specific Time For Room (${playstationRoomId})`));
+            //check if specific time is already completed
+            if (hour > specificTimeHoursAndMinutes.hour || (hour == specificTimeHoursAndMinutes.hour && (minute == specificTimeHoursAndMinutes.minute || minute > specificTimeHoursAndMinutes.minute))) {
+                hour = specificTimeHoursAndMinutes.hour;
+                console.log(hour);
+                minute = specificTimeHoursAndMinutes.minute;
+                console.log(minute);
 
-            timerSecond.innerHTML = `000`;
-            timerMinute.innerHTML = `${minute}`;
-            timerHour.innerHTML = `${hour}`;
-            //click the stop button to calculate invoice price
-            timerIntervalId = setInterval(timer, 1000);
+                timerSecond.innerHTML = `000`;
+                timerMinute.innerHTML = `${minute}`;
+                timerHour.innerHTML = `${hour}`;
+                //click the stop button to calculate invoice price
+                timerIntervalId = setInterval(timer, 1000);
 
-        } else {
-            updateTimerInnerHtml();
+            } else {
+                updateTimerInnerHtml();
+            }
+
+            specificTimeHourInput.value = specificTimeHoursAndMinutes.hour;
+            specificTimeMinuteInput.value = specificTimeHoursAndMinutes.minute;
         }
-      
-        specificTimeHourInput.value = specificTimeHoursAndMinutes.hour;
-        specificTimeMinuteInput.value = specificTimeHoursAndMinutes.minute;
-    }
-    else
-    {
-        updateTimerInnerHtml();
-        
-    }
+        else {
+            updateTimerInnerHtml();
 
-    roomStatus.innerHTML = "Busy";
-    startBtn.disabled = true;
+        }
+
+        roomStatus.innerHTML = "Busy";
+        startBtn.disabled = true;
+    }
+   
+
+   
 
 }
 else if (!playstationRoomId) {
@@ -188,14 +238,11 @@ else if (!playstationRoomId) {
 }
 
 
-//console.log(`room status : ${roomStatus.innerHTML}`);
-
 
 
 // Function to execute when the radio button is clicked
 function handleSpecificTimeRadioClick() {
     //set value into ls to use it to stope timer counter at specific time
-    //specificTimeDiv.style = "display : block";
     specificTimeDiv.classList.remove("d-none");
     specificTimeDiv.classList.add("d-flex");
     stopBtn.style = "display : none";
@@ -245,22 +292,13 @@ startBtn.addEventListener("click", () => {
 
     timerIntervalId = window.setInterval(timer, 1000);
  
-    startBtn.disabled = true;
-
-    
-    startTimeH1.innerHTML = startTime;
+    startBtn.disabled = true;  
     console.log(`startTime : ${startTime.toString()}`);
 
     localStorage.setItem(`start time for room (${playstationRoomId})`, startTime.toString());
 });
 
-var playstationRoomTableBody = document.getElementById("playstation-room-tbody");
-var singlePlayerRadio = document.getElementById("singleRadio");
-var MultiPlayerRadio = document.getElementById("MultiRadio");
 
-//get the single and multi price per hour of playstation room
-var singlePriceForHour = parseInt(playstationRoomTableBody.rows[0].cells[2].innerText);
-var multiPriceForHour =  parseInt(playstationRoomTableBody.rows[0].cells[3].innerText);
 
 var diffrence;
 var timeDiff;
@@ -270,41 +308,7 @@ var stopTime
 var playstationRoomTotalPrice;
 
 
-function handleStopBtnClick() {
-    clearInterval(timerIntervalId);
-    startBtn.disabled = true;
-    stopBtn.disabled = true;
 
-
-    if (localStorage.getItem(`Time Radio For Room (${playstationRoomId})`) == "specific") {
-        timeDiffInHours = parseInt(specificTimeHourInput.value);
-        timeDiffInMinutes = parseInt(specificTimeMinuteInput.value);
-    }
-    else {
-        var time1 = new Date("Sat Aug 12 2023 17:00:41 GMT+0300");
-        var time2 = new Date("Sat Aug 12 2023 18:45:41 GMT+0300");
-
-        if (localStorage.getItem(`start time for room (${playstationRoomId})`) !== null) {
-            startTime = new Date(localStorage.getItem(`start time for room (${playstationRoomId})`));
-            console.log(`startTime FROM IF : ${startTime}`);
-
-        }
-        // Calculate the time difference in milliseconds
-        stopTime = new Date();
-        var timeDiff = Math.abs(stopTime - startTime);
-        //timeDiff = Math.abs(time2 - time1);
-
-
-        // Convert milliseconds to hours and minutes
-        timeDiffInHours = Math.floor(timeDiff / (1000 * 60 * 60));
-        timeDiffInMinutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-    }
-
-    playstationRoomTotalPrice = singlePlayerRadio.checked ? Math.round(((timeDiffInMinutes / 60) + timeDiffInHours) * singlePriceForHour)
-        : Math.round(((timeDiffInMinutes / 60) + timeDiffInHours) * multiPriceForHour);
-
-    diffrenceH1.innerHTML = timeDiff;
-}
 stopBtn.addEventListener("click", handleStopBtnClick);
 
 
@@ -339,9 +343,10 @@ var orderTable = document.getElementById("order-table");
 var modalBody = document.getElementById("modal-body");
 var modalFooter = document.querySelector(".modal-footer");
 var orderTotalPriceValue;
-var AllItemsTotalPrice = 0;
 
 function showOrder() {
+    discount.value = 0;
+    var AllItemsTotalPrice = 0;
     var existingPsRoomTable ;
     var existingOrderTable ;
     console.log(modalBody);
